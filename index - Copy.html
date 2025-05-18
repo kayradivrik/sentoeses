@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sento</title>
+    <link href="./dist/output.css" rel="stylesheet">
+    <style>
+
+
+#sentoiyiki{
+    background-image: url('assets/image/true.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+}
+
+        .backdrop-blur {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        /* Logo bounce animation */
+        @keyframes logoBounce {
+            0% {
+                transform: translateY(0);
+            }
+
+            30% {
+                transform: translateY(-2px);
+            }
+
+            60% {
+                transform: translateY(1px);
+            }
+
+            100% {
+                transform: translateY(-1px);
+            }
+        }
+
+        .logo-hover {
+            transition: transform 0.3s ease;
+        }
+
+        .logo-hover:hover {
+            animation: logoBounce 1.2s ease-in-out infinite;
+        }
+
+        .slider-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .slider-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgb(220 38 38);
+            transition: all 0.3s ease;
+            z-index: 1;
+            border-radius: 9999px;
+        }
+
+        .slider-button:hover::before {
+            left: 0;
+        }
+
+        .slider-button span,
+        .slider-button img {
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .slider-button:hover span {
+            color: white;
+        }
+
+        .slider-button:hover img {
+            filter: brightness(0) invert(1);
+        }
+
+        /* Overlay styles */
+        .nav-overlay {
+            opacity: 0;
+            visibility: hidden;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            transform: scaleX(0);
+            transform-origin: left;
+            z-index: 20;
+        }
+
+        .nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: none;
+            transform: scaleX(1);
+        }
+
+        #navbar {
+            position: relative;
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.6) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(209, 213, 219, 0.6);
+        }
+
+        /* Prevent cursor interaction with overlay */
+        .nav-overlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        /* Dropdown styles */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(230, 17, 17, 0.95);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            min-width: 338px;
+            border-radius: 15px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            padding: 1rem;
+            margin-top: 0.75rem;
+        }
+
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 16px;
+            height: 16px;
+            background: rgba(230, 17, 17, 0.95);
+            transform: rotate(45deg);
+            border-radius: 2px;
+        }
+
+        .dropdown-trigger:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: white;
+            position: relative;
+            transform: translateX(0);
+            transition: all 0.3s ease;
+            font-size: 16px;
+            line-height: 1.5;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .dropdown-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            right: 1rem;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-item:last-child::after {
+            display: none;
+        }
+
+        /* Hamburger menu animation */
+        .menu-icon {
+            width: 28px;
+            height: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-icon.active {
+            transform: rotate(90deg);
+        }
+
+        .menu-icon .cls-1 {
+            fill: #E61111;
+            transition: fill 0.3s ease;
+        }
+
+        .menu-icon:hover .cls-1 {
+            fill: #ff0000;
+        }
+
+        /* Mobile menu styles */
+        .mobile-menu {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .close-icon {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            z-index: 60;
+        }
+
+        .mobile-menu-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu.active .mobile-menu-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-logo {
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .mobile-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: auto;
+        }
+
+        .nav-item>a {
+            font-size: 1.125rem;
+            color: #1F2937;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-item>a svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .submenu {
+            background: #E61111;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .submenu.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .submenu a {
+            color: white;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .submenu a:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .mobile-buttons {
+            margin-top: auto;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-buttons button {
+            width: 100%;
+            padding: 0.875rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-buttons .psikolog-btn {
+            background: #F3F4F6;
+            color: #1F2937;
+        }
+
+        .mobile-buttons .teklif-btn {
+            background: white;
+            color: #E61111;
+            border: 1px solid #E61111;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .teklif-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            border-radius: 100px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 4px 10px rgba(230, 17, 17, 0.2);
+            width: 224px;
+            height: 48px;
+        }
+
+        .teklif-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #E61111;
+            clip-path: polygon(0 0, 176px 0, 176px 100%, 0 100%);
+        }
+
+        .teklif-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #E61111;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .teklif-btn:hover::after {
+            left: 0;
+        }
+
+        .teklif-btn .text-part {
+            position: relative;
+            padding: 12px 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+        }
+
+        .teklif-btn .icon-part {
+            position: relative;
+            width: 48px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        @keyframes pencilExit {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translate(20px, -20px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pencilEnter {
+            0% {
+                transform: translate(20px, -20px);
+                opacity: 0;
+                filter: brightness(0) invert(1);
+            }
+
+            100% {
+                transform: translate(0, 0);
+                opacity: 1;
+                filter: brightness(0) invert(1);
+            }
+        }
+
+        .teklif-btn img {
+            width: 18px;
+            height: 18px;
+            filter: brightness(0) opacity(0.5);
+            z-index: 2;
+        }
+
+        .teklif-btn:hover img {
+            animation: pencilExit 0.2s ease forwards,
+                pencilEnter 0.2s ease 0.3s forwards;
+        }
+
+        .psikolog-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 100px;
+            background: #F3F4F6;
+            color: #1F2937;
+            padding: 14px 17px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            width: 223px;
+            height: 48px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .psikolog-btn:hover {
+            background: #E5E7EB;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 1410px) {
+            .psikolog-btn {
+                width: 200px;
+            }
+        }
+
+        .bg-red-500 {
+            background-color: #EF4444;
+            /* Tailwind'in bg-red-500 rengi */
+        }
+
+        .thisButton {
+            position: relative;
+            display: inline-block;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            outline: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .buttonBack {
+            display: block;
+            background: transparent;
+            border-radius: 999px;
+            border: 2px dashed #E61111;
+            padding: 3px;
+            position: relative;
+            transition: box-shadow 0.3s;
+        }
+
+        .buttonFront {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 999px;
+            padding: 0 24px 0 24px;
+            min-width: 200px;
+            height: 48px;
+            position: relative;
+            z-index: 1;
+            transition: background 0.3s;
+        }
+
+        .buttonTitle {
+            color: #E61111;
+            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-right: 16px;
+        }
+
+        .insideIcon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(230, 17, 17, 0.18);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            position: relative;
+            z-index: 2;
+            transition: background 0.3s;
+        }
+
+        .insideIcon i {
+            color: #E61111;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .buttonFront:hover .insideIcon i {
+            transform: translateX(4px) scale(1.1);
+        }
+
+        .outsideIcon {
+            display: none;
+            /* Efekt için JS ile kullanılabilir */
+        }
+
+        .footerButton {
+            @apply text-base relative left-0 transition duration-200 transition-all hover:left-2 cursor-pointer;
+        }
+
+        .background-secondary-dark {
+            background: #E0E0E0;
+        }
+
+        .footer-border {
+            border-color: #AFAFAF80;
+        }
+    </style>
+</head>
+
+<body class="bg-white">
+    <div id="container" class="relative    ">
+
+
+        <nav class="bg-white/90 border-b font-dmsans text-base relative z-30 sticky top-0">
+            <!-- Overlay -->
+            <div id="nav-overlay" class="nav-overlay z-20"></div>
+        
+            <div class="max-w-[96%] mx-33 mx-auto px-4">
+                <div class="flex justify-between 3xl:justify-between items-center h-[73px] xl:justify-between">
+                    <!-- Logo -->
+                    <a href="#" class="flex-shrink-0">
+                        <img src="assets/image/logo.svg" alt="Sento Logo"
+                            class="h-[68px] logo-hover 3xl:w-[103px] xl:w-[150px]">
+                    </a>
+        
+                    <!-- Desktop menüm işte -->
+                    <div id="navbar"
+                        class="hidden md:flex space-x-3 lg:mr-[12rem] coco:space-x-2 3xl:flex 3xl:mr-[0] lg:hidden md:hidden border-[1px] border-solid border-gray-400 coco:px-[10px] px-[32px] py-[2px] rounded-full font-dmsans">
+                        <div class="relative dropdown-trigger">
+                            <a href="#"
+                                class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600] flex items-center">
+                                Kurumsal
+                                <svg class="ml-2 transition-transform duration-300"
+                                    width="12" height="8" viewBox="0 0 8 5" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M4.38271 4.48379L4.77998 4.08653L7.59248 1.27402L7.9915 0.875002L7.19521 0.0787125L6.79795 0.475978L4.38271 2.89121L1.96748 0.477736L1.57021 0.0787125L0.773926 0.875002L1.17119 1.27227L3.98369 4.08477L4.38271 4.48379Z"
+                                        fill="#E61111" stroke="#E61111" stroke-width="0.5" stroke-linejoin="round" />
+                                </svg>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">Hakkımızda</a>
+                                <a href="#" class="dropdown-item">Misyon & Vizyon & Değerler</a>
+                            </div>
+                        </div>
+        
+                        <div class="relative dropdown-trigger">
+                            <a href="#"
+                                class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600] flex items-center">
+                                Hizmetlerimiz
+                                <svg class="ml-2 transition-transform duration-300"
+                                    width="12" height="8" viewBox="0 0 8 5" xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M4.38271 4.48379L4.77998 4.08653L7.59248 1.27402L7.9915 0.875002L7.19521 0.0787125L6.79795 0.475978L4.38271 2.89121L1.96748 0.477736L1.57021 0.0787125L0.773926 0.875002L1.17119 1.27227L3.98369 4.08477L4.38271 4.48379Z"
+                                        fill="#E61111" stroke="#E61111" stroke-width="0.5" stroke-linejoin="round" />
+                                </svg>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item dashed">Çalışan Destek Programı</a>
+                                <a href="#" class="dropdown-item dashed">İş Yeri Psikoloğu</a>
+                                <a href="#" class="dropdown-item dashed">Travma Sonrası Destek Programı</a>
+                                <a href="#" class="dropdown-item dashed">Kurumsal Söyleşiler</a>
+                                <a href="#" class="dropdown-item dashed">Psikolojik Güvenlik Politikaları</a>
+                            </div>
+                        </div>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">Blog</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">Referanslarımız</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">Kariyer</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">İletişim</a>
+                    </div>
+        
+                    <!-- Desktop Buttons -->
+                    <div id="buttonlar" class="hidden coco:flex md:flex space-x-4 md:hidden lg:hidden items-center">
+                        <button id="psikolog"
+                            class="bg-[#F3F4F6] text-[#1F2937] px-4 py-2 rounded-full text-[13px] font-semibold hover:bg-gray-200 transition-all duration-300">
+                            PSİKOLOG GİRİŞİ
+                        </button>
+                        <button style="width:220px; height:52px; padding:0; display:inline-block; border-radius:50px; border:1px dashed rgba(230,17,17,0.24); position:relative; cursor:pointer; background-color:transparent; overflow:hidden;" type="submit" onclick="location.href='hizli-teklif-talebi/index.html'">
+                            <div style="width:100%; height:100%; position:relative; overflow:hidden; border-radius:50px;">
+                              <div style="position:absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(239,241,242,1); border-radius:50px;"></div>
+                              <div style="position:absolute; top:5px; left:5px; width:170px; height:42px; background-color:#e61111; border-radius:50px; transition:width 0.3s ease; display:flex; align-items:center; box-shadow:rgba(230,17,17,0.24) 0px 14px 25px 0px;" onmouseover="this.style.width='210px'; document.getElementById('pen-icon').style.color='white'; document.getElementById('pen-icon').style.transform='scale(1.2)';" onmouseout="this.style.width='170px'; document.getElementById('pen-icon').style.color='#54595F'; document.getElementById('pen-icon').style.transform='scale(1)';">
+                                <span style="color:white; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; padding-left:25px; z-index:5;">HIZLI TEKLİF TALEBİ</span>
+                              </div>
+                              <span id="pen-icon" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); color:#54595F; transition:all 0.3s ease; font-weight:700; z-index:6;">
+                                <i class="fas fa-pen-alt" style="font-size:16px;"></i>
+                              </span>
+                            </div>
+                          </button>
+                    </div>
+        
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button"
+                        class="coco:hidden  justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500 z-50">
+                        <span class="sr-only">Ana menüyü aç</span>
+                        <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.85 28.33">
+                            <defs>
+                                <style>
+                                    .cls-1 {
+                                        fill: red;
+                                    }
+                                </style>
+                            </defs>
+                            <g id="Layer_2" data-name="Layer 2">
+                                <g id="Layer_1-2" data-name="Layer 1">
+                                    <rect class="cls-1" width="11.85" height="11.85" rx="3.51"></rect>
+                                    <rect class="cls-1" y="16.3" width="11.85" height="11.85" rx="3.51"></rect>
+                                    <rect class="cls-1" x="16" y="16.48" width="11.85" height="11.85" rx="3.51"></rect>
+                                    <path class="cls-1"
+                                        d="M24.34,2.18a1.51,1.51,0,0,1,1.51,1.51V8.52A1.52,1.52,0,0,1,24.34,10H19.51A1.52,1.52,0,0,1,18,8.52V3.69a1.51,1.51,0,0,1,1.51-1.51h4.83m0-2H19.51A3.51,3.51,0,0,0,16,3.69V8.52A3.51,3.51,0,0,0,19.51,12h4.83a3.51,3.51,0,0,0,3.51-3.51V3.69A3.51,3.51,0,0,0,24.34.18Z">
+                                    </path>
+                                </g>
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="mobile-menu hidden fixed inset-0 z-50">
+                <button id="close-menu-button" class="close-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#E61111"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+               <div class="  flex justify-base flex-col items-base w-full h-[100vh]  ">
+                <div class="mx-auto mt-40 "><img src="assets/image/logo.svg" alt="" class="w-36"></div >
+                <div class="flex flex-col mt-24 ml-20 text-[30px] space-y-4  mb-12 "  >
+                    <a href="#">kurumsal</a>
+                    <a href="#">Hizmetler</a>
+                    <a href="#">Blog</a>
+                    <a href="#">Referanslar</a>
+                    <a href="#">Kariyer</a>
+                    <a href="#">İletişim</a>
+
+
+                </div>
+                <div id="ortala" class="mx-auto ">
+
+
+                <button id="psikolog"
+                    class="bg-[#F3F4F6] text-[#1F2937] w-[220px] h-[52px] py-2 rounded-full text-[13px] font-semibold hover:bg-gray-200 transition-all duration-300 mx-auto ">
+                    PSİKOLOG GİRİŞİ
+                    </button>
+
+                
+         
+                </div>
+                <div id="ortala" class="mx-auto mt-2">
+                    
+                        <button style="width:220px; height:52px; padding:0; display:inline-block; border-radius:50px; border:1px dashed rgba(230,17,17,0.24); position:relative; cursor:pointer; background-color:transparent; overflow:hidden;   " type="submit" onclick="location.href='hizli-teklif-talebi/index.html'">
+                            <div style="width:100%; height:100%; position:relative; overflow:hidden; border-radius:50px;">
+                              <div style="position:absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(239,241,242,1); border-radius:50px;"></div>
+                              <div style="position:absolute; top:5px; left:5px; width:170px; height:42px; background-color:#e61111; border-radius:50px; transition:width 0.3s ease; display:flex; align-items:center; box-shadow:rgba(230,17,17,0.24) 0px 14px 25px 0px;" onmouseover="this.style.width='210px'; document.getElementById('pen-icon').style.color='white'; document.getElementById('pen-icon').style.transform='scale(1.2)';" onmouseout="this.style.width='170px'; document.getElementById('pen-icon').style.color='#54595F'; document.getElementById('pen-icon').style.transform='scale(1)';">
+                                <span style="color:white; font-family:'DM Sans',sans-serif; font-size:14px; font-weight:500; padding-left:25px; z-index:5;">HIZLI TEKLİF TALEBİ</span>
+                              </div>
+                              <span id="pen-icon" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); color:#54595F; transition:all 0.3s ease; font-weight:700; z-index:6;">
+                                <i class="fas fa-pen-alt" style="font-size:16px;"></i>
+                              </span>
+                            </div>
+                          </button>
+                </div>
+
+
+
+               </div>
+              
+       
+                </div>
+            </div>
+            
+        </nav>
+        
+        <style>
+        .dropdown-trigger:hover .transition-transform {
+            transform: rotate(180deg); /* Points upward on hover */
+        }
+        .dropdown-trigger .transition-transform {
+            transform: rotate(0deg); /* Points downward by default */
+        }
+        </style>
+
+
+        <div id="section"
+            class="max-w-[96%] bg-[#e61111] flex md:flex-row     justify-center  md:items-end md:pl-12 md:justify-between    items-center h-[74vh] mt-4 rounded-3xl min-w-[300px] mx-auto">
+            <div class=" flex items-center justify-center h-full    ">
+                <h1
+                    class="text-white font-['Plus_Jakarta_Sans'] font-semibold text-4xl sm:text-5xl xl:text-6xl leading-[1.1] mb-6   lg:text-[4rem]  lg:leading-[70px]     ">
+                    <span
+                        class="block pb-1 font-['Plus_Jakarta_Sans'] font-medium text-[#EFF1F2] text-[33px] leading-[40px]   lg:text-[4rem]    lg:leading-[70px]      ">Çalışan
+                        refahı için</span>
+                    <span
+                        class="block pb-1 mt-4 font-['Plus_Jakarta_Sans'] font-medium text-[#EFF1F2] text-[33px] leading-[40px]  lg:text-[4rem] lg:leading-[70px]   u   ">çıtayı
+                        yükseltmeye</span>
+                    <span
+                        class="block pb-1 mt-4 font-['Plus_Jakarta_Sans'] font-medium text-[#EFF1F2] text-[33px] leading-[40px]   lg:text-[4rem]  lg:leading-[70px]     ">kararlıyız.</span>
+                    <p class="text-white font-['Plus_Jakarta_Sans'] font-semibold text-[15px] mt-6">Bize Katılmanın
+                        Zamanı Geldi</p>
+
+                    <button class="thisButto  mt-12   ">
+                        <span class="buttonBack">
+                            <span class="buttonFront">
+                                <span class="buttonTitle   ">HADİ KONUŞALIM</span>
+                                <span class="insideIcon">
+                                    <i class="fas fa-arrow-right"></i>
+                                </span>
+                            </span>
+                            <!-- Çapraz çizgi için SVG -->
+                            <svg class="diagonalLine" width="100%" height="100%"
+                                style="position:absolute;top:0;left:0;z-index:0;pointer-events:none;">
+                                <line x1="70%" y1="0" x2="100%" y2="100%" stroke="#fff4" stroke-width="3" />
+                            </svg>
+                        </span>
+                    </button>
+
+
+
+                    
+            </div>
+
+            <div id="foto" class="">
+                <img src="assets/image/kadin.png" class="w-[21.25rem] md:block   hidden  lg:w-[100%]    ">
+            </div>
+
+
+        </div>
+
+
+        <div id="section2"
+            class="flex flex-col max-w-[90%]  mx-auto    h-auto    md:flex-row  justify-between   justify-center">
+
+
+            <div id="yazilar" class=" ml-2 mt-4   md:w-[50%]  lg:w-[67%]  mb-12 xl:ml-12   ">
+                <h2
+                    class="text-black font-['Plus_Jakarta_Sans'] font-semibold mb-3   text-[56px] md:text-[78px] xl:text-[150px]   ">
+                    Faydaları.</h2>
+                <p class="mb-5 text-[20px]  ">Çalışanın, zihnini meşgul eden kişisel sorunları <span
+                        class="text-red-500    ">çözüldüğünde</span> işine daha iyi <span class="text-red-500">
+                        konsantre</span> olur.</p>
+                <span class=" mb-5  "> Çalışan Destek Programları, iş-yaşam dengesini kurma konusunda geliştirilmiş en
+                    etkin çözümlerden biri olarak, işyerinde performansı dolayısı ile verimliliği ve kârlılığı artırmak
+                    için kurumlara ve yöneticilere yardımcı oluyor.</span>
+
+            </div>
+        
+            <div class="   lg:ml-12 mb-4 mt-12 space-y-6   flex justify-center   items-center flex-col">
+                <img src="assets/image/kirmizi.svg" alt="">
+                <img src="assets/image/pembe.svg" alt="">
+                <!-- Swiper ve GSAP CDN -->
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+                <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+                <!-- Progress Slider Başlangıç -->
+                <div class="swiper progress-swiper w-[180px] h-[180px] relative  flex  ">
+                  <div class="swiper-wrapper">
+                    <!-- Slide 1 -->
+                    <div class="swiper-slide flex items-center ml-3">
+                      <div class="relative w-[140px] h-[140px] flex items-center justify-center">
+                        <svg width="140" height="140" viewBox="0 0 140 140" class="block">
+                          <circle cx="70" cy="70" r="60" stroke="#eee" stroke-width="8" fill="none" transform="rotate(-90 70 70)" />
+                          <circle class="progressCircle" data-value="90" cx="70" cy="70" r="60" stroke="#e61111" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" transform="rotate(-90 70 70)"/>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                          <span class="text-[15px] text-black font-medium mb-1">Odaklanma</span>
+                          <span class="progressText text-[32px] font-bold text-[#e61111] leading-none">0%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Slide 2 -->
+                    <div class="swiper-slide flex items-center justify-center">
+                      <div class="relative w-[140px] h-[140px] flex items-center justify-center">
+                        <svg width="140" height="140" viewBox="0 0 140 140" class="block">
+                          <circle cx="70" cy="70" r="60" stroke="#eee" stroke-width="8" fill="none" transform="rotate(-90 70 70)" />
+                          <circle class="progressCircle" data-value="83" cx="70" cy="70" r="60" stroke="#e61111" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" transform="rotate(-90 70 70)"/>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
+                          <span class="text-[13px] text-black font-medium mb-1 leading-tight w-[90%] break-words">Üretkenlik Artışı</span>
+                          <span class="progressText text-[32px] font-bold text-[#e61111] leading-none">0%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Slide 3 -->
+                    <div class="swiper-slide flex items-center justify-center">
+                      <div class="relative w-[140px] h-[140px] flex items-center justify-center">
+                        <svg width="140" height="140" viewBox="0 0 140 140" class="block">
+                          <circle cx="70" cy="70" r="60" stroke="#eee" stroke-width="8" fill="none" transform="rotate(-90 70 70)" />
+                          <circle class="progressCircle" data-value="73" cx="70" cy="70" r="60" stroke="#e61111" stroke-width="8" fill="none" stroke-linecap="round" stroke-dasharray="377" stroke-dashoffset="377" transform="rotate(-90 70 70)"/>
+                        </svg>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                          <span class="text-[15px] text-black font-medium mb-1">Verimlilik</span>
+                          <span class="progressText text-[32px] font-bold text-[#e61111] leading-none">0%</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <script>
+                const swiper = new Swiper('.progress-swiper', {
+                  loop: true,
+                  autoplay: { delay: 4000, disableOnInteraction: false },
+                  slidesPerView: 1,
+                  allowTouchMove: true,
+                  speed: 700,
+                });
+
+                let gsapAnim;
+                function animateProgress(slide) {
+                  if (gsapAnim) gsapAnim.kill(); // Eski animasyonu temizle
+                  const circle = slide.querySelector('.progressCircle');
+                  const text = slide.querySelector('.progressText');
+                  if (!circle || !text) return;
+                  const maxPercent = parseInt(circle.getAttribute('data-value'));
+                  const circumference = 2 * Math.PI * 60;
+                  gsap.set(circle, { strokeDashoffset: circumference });
+                  gsap.set(text, { innerText: '0%' });
+                  gsapAnim = gsap.to(circle, {
+                    strokeDashoffset: circumference - (maxPercent / 100) * circumference,
+                    duration: 1.2,
+                    ease: 'power1.out'
+                  });
+                  gsap.to(text, {
+                    innerText: maxPercent,
+                    duration: 1.2,
+                    snap: { innerText: 1 },
+                    ease: 'power1.out',
+                    onUpdate: function() {
+                      text.innerText = `${Math.round(this.targets()[0].innerText)}%`;
+                    }
+                  });
+                }
+
+                // İlk animasyon
+                setTimeout(() => {
+                  animateProgress(document.querySelector('.swiper-slide-active'));
+                }, 200);
+
+                // Her slide değişiminde animasyon başlat
+                swiper.on('slideChangeTransitionStart', function () {
+                  setTimeout(() => {
+                    animateProgress(document.querySelector('.swiper-slide-active'));
+                  }, 200);
+                });
+                </script>
+            </div>
+           
+
+        </div>
+
+
+
+        
+         <!-- Swiper CSS -->
+
+
+<div class="w-full h-[80vh] flex justify-center items-center" id="sentoiyiki">
+  <div class="w-[90%] md:w-[70%] h-[85%] bg-black bg-opacity-60 rounded-3xl px-6 md:px-12 flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-6">
+    
+    <!-- Sol Logo Kısmı -->
+    <div class="flex justify-center items-center w-full md:w-1/2 h-[30%] md:h-full">
+      <img src="assets/image/Logo.png" alt="Logo" class="max-h-[60%]">
+    </div>
+
+    <!-- Responsive çizgi: sm = yatay, md+ = dikey -->
+    <div class="relative w-[85%] h-[2px] md:w-[2px] md:h-[70%]">
+      <div class="absolute inset-0 bg-white bg-opacity-20 rounded-full"></div>
+      <div class="absolute top-[1px] bottom-[1px] left-[1px] right-[1px] bg-white bg-opacity-40 rounded-full"></div>
+    </div>
+
+    <!-- Sağ Yazı Kısmı (Swiper) -->
+    <div class="flex justify-center items-center w-full md:w-1/2">
+      <div class="swiper mySwiper w-full">
+        <div class="swiper-wrapper text-white text-center md:text-right">
+
+          <!-- Slide 1 -->
+          <div class="swiper-slide flex flex-col items-center md:items-end">
+            <h3 class="text-[20px] font-bold mb-2 md:text-[30px]">Güven</h3>
+            <p class="text-[15px] font-medium leading-tight md:text-[20px]">
+              20 yılı aşkın uluslararası hizmet tecrübesi, gelişmiş altyapı,<br />
+              uzman kadro ve geniş hizmet ağı.
+            </p>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="swiper-slide flex flex-col items-center md:items-end">
+            <h3 class="text-[20px] font-bold mb-2 md:text-[30px]">Performans</h3>
+            <p class="text-[15px] font-medium leading-tight md:text-[20px]">
+              Çalışanın zihnini meşgul eden kişisel sorunların çözülmesi.
+            </p>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="swiper-slide flex flex-col items-center md:items-end">
+            <h3 class="text-[20px] font-bold mb-2 md:text-[30px]">Destek</h3>
+            <p class="text-[15px] font-medium leading-tight md:text-[20px]">
+              Psikolojik, tıbbi, mali ve hukuki konulardaki uzman desteği.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Swiper JS -->
+
+ 
+          
+          
+
+
+
+
+     
+
+
+
+
+        
+
+
+
+        <!-- Kız fotoğrafı EN ÜSTE -->
+        <div class="kadinfotorafi flex justify-around mx-auto items-center flex-col relative sm:hidden      ">
+            <img src="assets/image/Kizfoto.svg" alt="" class="max-w-[80%]">
+            <!-- Responsive Blur kutu -->
+            <div class="absolute bottom-1/2  translate-x-1/2  translate-y-1/2 
+                max-w-[170px] max-h-[170px] rounded-tl-[200px] rounded-tr-[200px] rounded-bl-[180px]
+                sm:w-[244px] sm:h-[244px] sm:rounded-tl-[244px] sm:rounded-tr-[244px] sm:rounded-bl-[224px]
+                md:w-[300px] md:h-[300px] md:rounded-tl-[300px] md:rounded-tr-[300px] md:rounded-bl-[280px]
+                border border-[#EFF1F2] border-opacity-40
+                bg-[#EFF1F2]/40
+                backdrop-blur-md
+                flex items-center justify-center text-black text-xl shadow-lg">
+                <!-- İçeriği sen dolduracaksın -->
+            </div>
+        </div>
+
+        <!-- FOOTER BAŞLANGICI -->
+
+        <!--BU MASASÜSTÜ İÇİN OLAN FOOTER -->
+     
+<footer class="mt-12  flex gap-4  justify-between  bg max-w-[96%]  mx-auto hidden md:flex">
+
+            <div class="flex flex-col gap-4 col-span-4 ">
+                <div class="kadinfotorafi  flex justify-center items-center flex-col relative">
+                    <img src="assets/image/Kizfoto.svg" alt=""
+                        class="max-w-[410px] h-[435px] max-w-[210px] md:max-w-[1000px]    ">
+                    <!-- Responsive Blur kutu -->
+                    <div class="absolute bottom-1/2  translate-x-1/2  translate-y-1/2 
+                                            max-w-[170px] max-h-[170px] rounded-tl-[200px] rounded-tr-[200px] rounded-bl-[180px]
+                                            sm:w-[244px] sm:h-[244px] sm:rounded-tl-[244px] sm:rounded-tr-[244px] sm:rounded-bl-[224px]
+                                            md:w-[300px] md:h-[300px] md:rounded-tl-[300px] md:rounded-tr-[300px] md:rounded-bl-[280px]
+                                            border border-[#EFF1F2] border-opacity-40
+                                            bg-[#EFF1F2]/40
+                                            backdrop-blur-md
+                                            flex items-center justify-center text-black text-xl shadow-lg">
+                        <!-- İçeriği sen dolduracaksın -->
+                    </div>
+                </div>
+                <div class="bg-[#EFF1F2] flex flex-col gap-4 m-4 p-4 rounded-2xl w-[1057px]  h-[523px]   ">
+                    <div class="flex justify-between m-4 items-center">
+                        <figure>
+                            <img src="assets/image/logo.svg" alt="sento.">
+                        </figure>
+                        <div class="flex items-center gap-2 border footer-border p-1 border-dashed rounded-[30px]   ">
+                            <div class="background-secondary-dark py-2 px-4 font-semibold rounded-full      ">
+                                TÜRKÇE
+                            </div>
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </div>
+                    <div class="flex gap-8 px-4">
+                        <div class="flex flex-col">
+                            <span class="text-red-600 text-sm">Kurumsal</span>
+                            <ul class="flex flex-col gap-2 mt-2">
+                                <li class="footerButton">
+                                    Hakkımızda
+                                </li>
+                                <li class="footerButton">
+                                    Misyon & Vizyon & Değerler
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="w-2 border footer-border  rounded-full h-64"></div>
+                        <div class="flex flex-col">
+                            <span class="text-red-600 text-sm">Hizmetlerimiz</span>
+                            <ul class="flex flex-col gap-2 mt-2">
+                                <li class="footerButton">
+                                    Çalışan Destek Programı
+                                </li>
+                                <li class="footerButton">
+                                    İşyeri Psikoloğu
+                                </li>
+                                <li class="footerButton">
+                                    Travma Sonrası Destek Programı
+                                </li>
+                                <li class="footerButton">
+                                    Psikoloji Söyleyişleri
+                                </li>
+                                <li class="footerButton">
+                                    Sağlıklı Beslenme Söyleyişleri
+                                </li>
+                                <li class="footerButton">
+                                    Ruh Sağlığı Politikaları
+                                </li>
+                                <li class="footerButton">
+                                    Çeşitlilik ve Kapsayıcılık Politikaları
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="w-2 border footer-border rounded-full h-64"></div>
+                        <div>
+                            <span class="text-red-600 text-sm">Menü</span>
+                            <ul class="flex flex-col gap-2 mt-2">
+                                <li class="footerButton">
+                                    Blog
+                                </li>
+                                <li class="footerButton">
+                                    Referanslarımız
+                                </li>
+                                <li class="footerButton">
+                                    Kariyer
+                                </li>
+                                <li class="footerButton">
+                                    S.S.S
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-span-2">
+                <div id="navigationes" class="bg-[#080404] max-w-[98%] md:maxw-[50%] rounded-3xl mt-32 p-2 ">
+
+                    <!-- Sağdaki harita ve iletişim bölümü -->
+                    <div class="bg-black w-full rounded-xl overflow-hidden">
+                        <!-- Harita -->
+                        <div class="w-528 aspect-video h-auto relative">
+                            <iframe
+                                src="https://maps.google.com/maps?q=Sento%20e%C4%9Fitim%20dan%C4%B1%C5%9Fmanl%C4%B1k&t=m&z=14&output=embed&iwloc=near"
+                                frameborder="0" class="w-full h-full" allowfullscreen="">
+                            </iframe>
+                        </div>
+
+                        <!-- İçerik bölümü -->
+                        <div class="mb-6 text-white">
+                            <div class="mb-8">
+                                <p class="text-sm text-gray-600 mb-3">Adresimiz</p>
+                                <h3 class="text-xl font-medium">Barbaros Mah. Lale Sk. Ağaoğlu My Office NO:2 İç
+                                    Kapı:
+                                    13 Ataşehir/İSTANBUL</h3>
+                                <div class="h-px bg-gray-800 my-8"></div>
+                            </div>
+
+                            <div class="mb-6">
+                                <p class="text-sm text-gray-400 mb-1">Bizi ara</p>
+                                <h2 class="text-3xl font-medium">0850 480 87 80</h2>
+                                <div class="h-px bg-gray-800 my-8"></div>
+                            </div>
+
+                            <div class="mb-8">
+                                <p class="text-sm text-gray-400 mb-1">Bize e-posta gönder</p>
+                                <h3 class="text-2xl font-medium">info@sento.com.tr</h3>
+                            </div>
+
+                            <!-- Sosyal medya ikonları -->
+                            <div class="flex justify-center space-x-4 my-6">
+                                <a href="#" class="text-white hover:text-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                                    </svg>
+                                </a>
+                                <a href="#" class="text-white hover:text-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
+                                    </svg>
+                                </a>
+                                <a href="#" class="text-white hover:text-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z" />
+                                    </svg>
+                                </a>
+                                <a href="#" class="text-white hover:text-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" />
+                                    </svg>
+                                </a>
+                                <a href="#" class="text-white hover:text-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <footer class="hidden">
+        </footer>
+
+
+
+  
+
+
+
+
+
+  <!---- ara bosluk -->
+
+
+
+
+
+
+
+
+  <!--BU MOBİL  İÇİN OLAN FOOTER -->
+        <footer class="mt-12 flex gap-4 flex-col-reverse lg:flex-row lg:flex-col w-[90%] mx-auto bg-blue-700 lg:justify-right md:hidden ">
+            <!-- Harita ve iletişim -->
+            <div class="order-2 lg:order-1 col-span-2     flex  bg-red-500 ">
+                <div id="navigationes"
+                     class="bg-[#080404] w-full max-w-[92%] sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl mt-8 mx-auto p-2 bg-pink-600  ">
+                    <div class="bg-black w-full rounded-xl overflow-hidden    ">
+                        <!-- Harita -->
+                        <div class="w-528 aspect-video h-auto relative">
+                            <iframe
+                                src="https://maps.google.com/maps?q=Sento%20e%C4%9Fitim%20dan%C4%B1%C5%9Fmanl%C4%B1k&t=m&z=14&output=embed&iwloc=near"
+                                frameborder="0" class="w-full h-full" allowfullscreen="">
+                            </iframe>
+                        </div>
+
+                        <!-- İçerik bölümü -->
+                        <div class="mb-6 text-white">
+                            <div class="mb-8">
+                                <p class="text-sm text-gray-600 mb-3">Adresimiz</p>
+                                <h3 class="text-xl font-medium">Barbaros Mah. Lale Sk. Ağaoğlu My Office NO:2 İç
+                                    Kapı:
+                                    13 Ataşehir/İSTANBUL</h3>
+                                <div class="h-px bg-gray-800 my-8"></div>
+                            </div>
+
+                            <div class="mb-6">
+                                <p class="text-sm text-gray-400 mb-1">Bizi ara</p>
+                                <h2 class="text-3xl font-medium">0850 480 87 80</h2>
+                                <div class="h-px bg-gray-800 my-8"></div>
+                            </div>
+
+                            <div class="mb-8">
+                                <p class="text-sm text-gray-400 mb-1">Bize e-posta gönder</p>
+                                <h3 class="text-2xl font-medium">info@sento.com.tr</h3>
+                            </div>
+
+                            <!-- Sosyal medya ikonları -->
+                            <div class="flex justify-center space-x-4 my-6  ">
+                                <a href="#" class="text-white hover:text-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z" />
+                                    </svg>
+                                </a>
+                                <a href="#" class="text-white hover:text-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z" />
+                                    </svg>
+                                </a>
+                                <a href="#" class="text-white hover:text-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M8.051 1.999h.089c.822.003 4.987.033 6.11.335a2.01 2.01 0 0 1 1.415 1.42c.101.38.172.883.22 1.402l.01.104.022.26.008.104c.065.914.073 1.77.074 1.957v.075c-.001.194-.01 1.108-.082 2.06l-.008.105-.009.104c-.05.572-.124 1.14-.235 1.558a2.007 2.007 0 0 1-1.415 1.42c-1.16.312-5.569.334-6.18.335h-.142c-.309 0-1.587-.006-2.927-.052l-.17-.006-.087-.004-.171-.007-.171-.007c-1.11-.049-2.167-.128-2.654-.26a2.007 2.007 0 0 1-1.415-1.419c-.111-.417-.185-.986-.235-1.558L.09 9.82l-.008-.104A31.4 31.4 0 0 1 0 7.68v-.123c.002-.215.01-.958.064-1.778l.007-.103.003-.052.008-.104.022-.26.01-.104c.048-.519.119-1.023.22-1.402a2.007 2.007 0 0 1 1.415-1.42c.487-.13 1.544-.21 2.654-.26l.17-.007.172-.006.086-.003.171-.007A99.788 99.788 0 0 1 7.858 2h.193zM6.4 5.209v4.818l4.157-2.408L6.4 5.209z" />
+                                    </svg>
+                                </a>
+                                <a href="#" class="text-white hover:text-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z" />
+                                    </svg>
+                                </a>
+                                <a href="#" class="text-white hover:text-red-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path
+                                            d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Menü -->
+            <div class="order-1 lg:order-2 flex flex-col gap-4 col-span-4    ">
+                <div class="bg-[#EFF1F2] flex flex-col gap-4 m- p-4 rounded-2xl   lg:max-w-[780px] lg:h-[464px] bg-yellow-500   ">
+                    <div class="flex justify-between m-4 items-center">
+                        <figure>
+                            <img src="assets/image/logo.svg" alt="sento.">
+                        </figure>
+                        <div class="flex items-center gap-2 border footer-border p-1 border-dashed rounded-full  ">
+                            <div class="background-secondary-dark py-2 px-4 font-semibold rounded-full">
+                                TÜRKÇE
+                            </div>
+                            <i class="fas fa-angle-down"></i>
+                        </div>
+                    </div>
+                    <div class="flex flex-col  px-4">
+                        <div class="flex flex-col">
+                            <span class="text-red-600 text-sm">Kurumsal</span>
+                            <ul class="flex flex-col gap-2 mt-2">
+                                <li class="footerButton">
+                                    Hakkımızda
+                                </li>
+                                <li class="footerButton">
+                                    Misyon & Vizyon & Değerler
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="w-2 border footer-border hidden
+                         rounded-full h-64"></div>
+                        <div class="flex flex-col">
+                            <span class="text-red-600 text-sm">Hizmetlerimiz</span>
+                            <ul class="flex flex-col gap-2 mt-2  ">
+                                <li class="footerButton">
+                                    Çalışan Destek Programı
+                                </li>
+                                <li class="footerButton">
+                                    İşyeri Psikoloğu
+                                </li>
+                                <li class="footerButton">
+                                    Travma Sonrası Destek Programı
+                                </li>
+                                <li class="footerButton">
+                                    Psikoloji Söyleyişleri
+                                </li>
+                                <li class="footerButton">
+                                    Sağlıklı Beslenme Söyleyişleri
+                                </li>
+                                <li class="footerButton">
+                                    Ruh Sağlığı Politikaları
+                                </li>
+                                <li class="footerButton">
+                                    Çeşitlilik ve Kapsayıcılık Politikaları
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="w-2 border footer-border rounded-full h-64 hidden   "></div>
+                        <div>
+                            <span class="text-red-600 text-sm">Menü</span>
+                            <ul class="flex flex-col gap-2 mt-2">
+                                <li class="footerButton">
+                                    Blog
+                                </li>
+                                <li class="footerButton">
+                                    Referanslarımız
+                                </li>
+                                <li class="footerButton">
+                                    Kariyer
+                                </li>
+                                <li class="footerButton">
+                                    S.S.S
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+        <footer class="hidden">
+        </footer>
+    </div>
+
+
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuButton = document.getElementById('mobile-menu-button');
+            const closeButton = document.getElementById('close-menu-button');
+            const menuIcon = menuButton.querySelector('.menu-icon');
+
+            // Submenu functionality
+            const navItems = document.querySelectorAll('.nav-item > a');
+
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const submenuId = item.getAttribute('data-submenu') + '-submenu';
+                    const submenu = document.getElementById(submenuId);
+                    const arrow = item.querySelector('svg');
+
+                    // Close other submenus
+                    document.querySelectorAll('.submenu').forEach(menu => {
+                        if (menu.id !== submenuId && menu.classList.contains('active')) {
+                            menu.classList.remove('active');
+                            menu.previousElementSibling.querySelector('svg').classList.remove('rotate-180');
+                        }
+                    });
+
+                    // Toggle current submenu
+                    submenu.classList.toggle('active');
+                    arrow.classList.toggle('rotate-180');
+                });
+            });
+
+            function openMenu() {
+                mobileMenu.classList.remove('hidden');
+                setTimeout(() => {
+                    mobileMenu.classList.add('active');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMenu() {
+                mobileMenu.classList.remove('active');
+                // Close all submenus
+                document.querySelectorAll('.submenu').forEach(submenu => {
+                    submenu.classList.remove('active');
+                });
+                document.querySelectorAll('.nav-item > a svg').forEach(arrow => {
+                    arrow.classList.remove('rotate-180');
+                });
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                }, 300);
+                document.body.style.overflow = '';
+            }
+
+            menuButton.addEventListener('click', openMenu);
+            closeButton.addEventListener('click', closeMenu);
+        });
+
+        // Enhanced navbar hover functionality
+        document.addEventListener('DOMContentLoaded', function () {
+            const navbar = document.getElementById('navbar');
+            const overlay = document.getElementById('nav-overlay');
+            let timeoutId = null;
+
+            function showOverlay() {
+                clearTimeout(timeoutId);
+                overlay.classList.add('active');
+            }
+
+            function hideOverlay() {
+                timeoutId = setTimeout(() => {
+                    overlay.classList.remove('active');
+                }, 100); // Small delay to prevent flickering
+            }
+
+            // Mouse enter/leave events for navbar
+            navbar.addEventListener('mouseenter', showOverlay);
+            navbar.addEventListener('mouseleave', hideOverlay);
+
+            // Mouse enter/leave events for overlay
+            overlay.addEventListener('mouseenter', () => {
+                clearTimeout(timeoutId);
+            });
+            overlay.addEventListener('mouseleave', hideOverlay);
+
+            // Click outside to close
+            document.addEventListener('click', (e) => {
+                if (!navbar.contains(e.target) && !overlay.contains(e.target)) {
+                    hideOverlay();
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Nested submenu functionality
+            const nestedTriggers = document.querySelectorAll('.nested-submenu-trigger');
+
+            nestedTriggers.forEach(trigger => {
+                trigger.addEventListener('mouseenter', () => {
+                    // Close other nested submenus
+                    document.querySelectorAll('.nested-submenu').forEach(menu => {
+                        if (menu !== trigger.nextElementSibling) {
+                            menu.classList.remove('active');
+                        }
+                    });
+
+                    // Open current nested submenu
+                    const nestedSubmenu = trigger.nextElementSibling;
+                    nestedSubmenu.classList.add('active');
+                });
+            });
+
+            // Close nested submenus when leaving the parent submenu
+            document.querySelectorAll('.submenu').forEach(submenu => {
+                submenu.addEventListener('mouseleave', () => {
+                    submenu.querySelectorAll('.nested-submenu').forEach(nested => {
+                        nested.classList.remove('active');
+                    });
+                });
+            });
+        });
+
+        function animateCircle(percent) {
+            const circle = document.getElementById('progressCircle');
+            const text = document.getElementById('progressText');
+            const radius = 60;
+            const circumference = 2 * Math.PI * radius;
+            let current = 0;
+            let interval = setInterval(() => {
+                if (current > percent) {
+                    clearInterval(interval);
+                    return;
+                }
+                let offset = circumference - (current / 100) * circumference;
+                circle.style.strokeDashoffset = offset;
+                text.textContent = `%${current}`;
+                current++;
+            }, 10);
+        }
+
+       
+        animateCircle(65);
+    </script>
+  
+</body>
+
+</html>

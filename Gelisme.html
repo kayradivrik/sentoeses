@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sento</title>
+    <link href="/dist/output.css" rel="stylesheet">
+    <style>
+        .backdrop-blur {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .slider-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .slider-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgb(220 38 38);
+            transition: all 0.3s ease;
+            z-index: 1;
+            border-radius: 9999px;
+        }
+
+        .slider-button:hover::before {
+            left: 0;
+        }
+
+        .slider-button span, .slider-button img {
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .slider-button:hover span {
+            color: white;
+        }
+
+        .slider-button:hover img {
+            filter: brightness(0) invert(1);
+        }
+
+        /* Overlay styles */
+        .nav-overlay {
+            opacity: 0;
+            visibility: hidden;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            transform: scaleX(0);
+            transform-origin: left;
+            z-index: 20;
+        }
+
+        .nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: none;
+            transform: scaleX(1);
+        }
+
+        #navbar {
+            position: relative;
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        /* Prevent cursor interaction with overlay */
+        .nav-overlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div id="container" class="relative">
+        <nav class="bg-white border-b font-dmsans text-base relative z-30">
+            <!-- Overlay -->
+            <div id="nav-overlay" class="nav-overlay z-20"></div>
+            
+            <div class="w-screen mx-33 mx-auto px-4 md:px-24">
+                <div class="flex justify-between items-center h-[73px]">
+                    <!-- Logo -->
+                    <a href="#" class="flex-shrink-0">
+                        <img src="assets/image/logo.svg" alt="Sento Logo" class="h-[68px]">
+                    </a>
+
+                    <!-- Desktop Navigation -->
+                    <div id="navbar" class="hidden md:flex space-x-4 lg:mr-[12rem] border-[1px] border-solid border-gray-400 px-[38px] py-[2px] rounded-full font-dmsans">
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-[16px] font-[600] flex items-center">
+                            Kurumsal
+                            <svg class="ml-3" width="12" height="8" viewBox="0 0 8 5" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.38271 4.48379L4.77998 4.08653L7.59248 1.27402L7.9915 0.875002L7.19521 0.0787125L6.79795 0.475978L4.38271 2.89121L1.96748 0.477736L1.57021 0.0787125L0.773926 0.875002L1.17119 1.27227L3.98369 4.08477L4.38271 4.48379Z"
+                                  fill="#E61111"
+                                  stroke="#E61111"
+                                  stroke-width="0.5"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                              
+                        </a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-3 py-2 text-[16px] font-[600] flex items-center">
+                            Hizmetlerimiz
+                            <svg class="ml-3" width="12" height="8" viewBox="0 0 8 5" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4.38271 4.48379L4.77998 4.08653L7.59248 1.27402L7.9915 0.875002L7.19521 0.0787125L6.79795 0.475978L4.38271 2.89121L1.96748 0.477736L1.57021 0.0787125L0.773926 0.875002L1.17119 1.27227L3.98369 4.08477L4.38271 4.48379Z"
+                                  fill="#E61111"
+                                  stroke="#E61111"
+                                  stroke-width="0.5"
+                                  stroke-linejoin="round"
+                                />
+                              </svg>
+                              
+                        </a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[16px] font-[600]">Blog</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[16px] font-[600]">Referanslarımız</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[16px] font-[600]">Kariyer</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[16px] font-[600]">İletişim</a>
+                    </div>
+
+                    <!-- Desktop Buttons -->
+                    <div id="buttonlar" class="hidden md:flex space-x-4">
+                        <button id="psikolog" class="bg-gray-100 text-gray-800 pt-[14px] pb-[14px] pl-[17px] pr-[17px]   rounded-[300px]  w-[223px]   text-sm font-bold">
+                            Psikolog Girişi
+                        </button>
+                        <button id="hizliteklif" class="slider-button bg-white border border-red-600 text-red-600 px-6 py-2 rounded-full text-sm font-bold flex items-center gap-2">
+                            <span>Hızlı Teklif Talebi</span>
+                            <img src="assets/image/kalem.svg" alt="Kalem" class="w-4 h-4">
+                        </button>
+                    </div>
+
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button" class="md:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500 z-50">
+                        <span class="sr-only">Ana menüyü aç</span>
+                        <!-- Hamburger icon -->
+                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                            <path class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile menu, show/hide based on menu state -->
+            <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-black/30 backdrop-blur">
+                <div class="flex flex-col items-center justify-start h-full pt-20 pb-6">
+                    <!-- Centered Logo -->
+                    <div class="mb-10">
+                        <img src="assets/image/logo.svg" alt="Sento Logo" class="h-12">
+                    </div>
+                    
+                    <!-- Mobile Navigation Links -->
+                    <div class="flex flex-col items-center space-y-6 mb-8 font-dmsans">
+                        <a href="#" class="text-gray-800 hover:text-gray-900 px-3 py-2 text-xl font-bold">Kurumsal</a>
+                        <a href="#" class="text-gray-800 hover:text-gray-900 px-3 py-2 text-xl font-bold">Hizmetlerimiz</a>
+                        <a href="#" class="text-gray-800 hover:text-gray-900 px-3 py-2 text-xl font-bold">Blog</a>
+                        <a href="#" class="text-gray-800 hover:text-gray-900 px-3 py-2 text-xl font-bold">Referanslarımız</a>
+                        <a href="#" class="text-gray-800 hover:text-gray-900 px-3 py-2 text-xl font-bold">Kariyer</a>
+                        <a href="#" class="text-gray-800 hover:text-gray-900 px-3 py-2 text-xl font-bold">İletişim</a>
+                    </div>
+
+                    <!-- Mobile Buttons -->
+                    <div class="flex flex-col items-center space-y-4 w-64">
+                        <button id="psikolog-mobile" class="w-screen bg-gray-100 text-gray-800 px-4 py-3 rounded-lg text-base font-bold">
+                            PSİKOLOG GİRİŞİ
+                        </button>
+                        <button id="hizliteklif-mobile" class="slider-button w-full bg-white border border-red-600 text-red-600 px-6 py-3 rounded-full text-base font-bold flex items-center justify-center gap-2">
+                            <span>TEKLİF TALEBİ</span>
+                            <img src="assets/image/kalem.svg" alt="Kalem" class="w-4 h-4">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <div id="section">
+
+
+
+
+
+
+        </div>
+    </div>
+    
+
+    <script>
+        // Hamburger menu functionality
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const hamburgerButton = document.getElementById('mobile-menu-button');
+            
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileMenu.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+                hamburgerButton.innerHTML = `
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                `;
+            } else {
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = '';
+                hamburgerButton.innerHTML = `
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                `;
+            }
+        });
+
+        // Enhanced navbar hover functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('navbar');
+            const overlay = document.getElementById('nav-overlay');
+            let timeoutId = null;
+
+            function showOverlay() {
+                clearTimeout(timeoutId);
+                overlay.classList.add('active');
+            }
+
+            function hideOverlay() {
+                timeoutId = setTimeout(() => {
+                    overlay.classList.remove('active');
+                }, 100); // Small delay to prevent flickering
+            }
+
+            // Mouse enter/leave events for navbar
+            navbar.addEventListener('mouseenter', showOverlay);
+            navbar.addEventListener('mouseleave', hideOverlay);
+
+            // Mouse enter/leave events for overlay
+            overlay.addEventListener('mouseenter', () => {
+                clearTimeout(timeoutId);
+            });
+            overlay.addEventListener('mouseleave', hideOverlay);
+
+            // Click outside to close
+            document.addEventListener('click', (e) => {
+                if (!navbar.contains(e.target) && !overlay.contains(e.target)) {
+                    hideOverlay();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

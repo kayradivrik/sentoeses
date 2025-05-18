@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sento</title>
+    <link href="./dist/output.css" rel="stylesheet">
+    <style>
+        .backdrop-blur {
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        /* Logo bounce animation */
+        @keyframes logoBounce {
+            0% { transform: translateY(0); }
+            30% { transform: translateY(-2px); }
+            60% { transform: translateY(1px); }
+            100% { transform: translateY(-1px); }
+        }
+
+        .logo-hover {
+            transition: transform 0.3s ease;
+        }
+
+        .logo-hover:hover {
+            animation: logoBounce 1.2s ease-in-out infinite;
+        }
+
+        .slider-button {
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .slider-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgb(220 38 38);
+            transition: all 0.3s ease;
+            z-index: 1;
+            border-radius: 9999px;
+        }
+
+        .slider-button:hover::before {
+            left: 0;
+        }
+
+        .slider-button span, .slider-button img {
+            position: relative;
+            z-index: 2;
+            transition: all 0.3s ease;
+        }
+
+        .slider-button:hover span {
+            color: white;
+        }
+
+        .slider-button:hover img {
+            filter: brightness(0) invert(1);
+        }
+
+        /* Overlay styles */
+        .nav-overlay {
+            opacity: 0;
+            visibility: hidden;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            pointer-events: none;
+            transform: scaleX(0);
+            transform-origin: left;
+            z-index: 20;
+        }
+
+        .nav-overlay.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: none;
+            transform: scaleX(1);
+        }
+
+        #navbar {
+            position: relative;
+            z-index: 40;
+            background: rgba(255, 255, 255, 0.6) !important;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(209, 213, 219, 0.6);
+        }
+
+        /* Prevent cursor interaction with overlay */
+        .nav-overlay::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        /* Dropdown styles */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: rgba(230, 17, 17, 0.95);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            min-width: 338px;
+            border-radius: 15px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            padding: 1rem;
+            margin-top: 0.75rem;
+        }
+
+        .dropdown-menu::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 16px;
+            height: 16px;
+            background: rgba(230, 17, 17, 0.95);
+            transform: rotate(45deg);
+            border-radius: 2px;
+        }
+
+        .dropdown-trigger:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: white;
+            position: relative;
+            transform: translateX(0);
+            transition: all 0.3s ease;
+            font-size: 16px;
+            line-height: 1.5;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .dropdown-item:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .dropdown-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 1rem;
+            right: 1rem;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .dropdown-item:last-child::after {
+            display: none;
+        }
+
+        /* Hamburger menu animation */
+        .menu-icon {
+            width: 28px;
+            height: 28px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-icon.active {
+            transform: rotate(90deg);
+        }
+
+        .menu-icon .cls-1 {
+            fill: #E61111;
+            transition: fill 0.3s ease;
+        }
+
+        .menu-icon:hover .cls-1 {
+            fill: #ff0000;
+        }
+
+        /* Mobile menu styles */
+        .mobile-menu {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .close-icon {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            z-index: 60;
+        }
+
+        .mobile-menu-content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu.active .mobile-menu-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-logo {
+            margin-top: 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .mobile-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: auto;
+        }
+
+        .nav-item > a {
+            font-size: 1.125rem;
+            color: #1F2937;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-item > a svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .submenu {
+            background: #E61111;
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 0.5rem;
+            display: none;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .submenu.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .submenu a {
+            color: white;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .submenu a:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        .mobile-buttons {
+            margin-top: auto;
+            padding: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .mobile-buttons button {
+            width: 100%;
+            padding: 0.875rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-buttons .psikolog-btn {
+            background: #F3F4F6;
+            color: #1F2937;
+        }
+
+        .mobile-buttons .teklif-btn {
+            background: white;
+            color: #E61111;
+            border: 1px solid #E61111;
+            border-radius: 9999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .teklif-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            border-radius: 100px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 4px 10px rgba(230, 17, 17, 0.2);
+            width: 224px;
+            height: 48px;
+        }
+
+        .teklif-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #E61111;
+            clip-path: polygon(0 0, 176px 0, 176px 100%, 0 100%);
+        }
+
+        .teklif-btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: #E61111;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .teklif-btn:hover::after {
+            left: 0;
+        }
+
+        .teklif-btn .text-part {
+            position: relative;
+            padding: 12px 20px;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+        }
+
+        .teklif-btn .icon-part {
+            position: relative;
+            width: 48px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+            overflow: hidden;
+        }
+
+        @keyframes pencilExit {
+            0% {
+                transform: translate(0, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(20px, -20px);
+                opacity: 0;
+            }
+        }
+
+        @keyframes pencilEnter {
+            0% {
+                transform: translate(20px, -20px);
+                opacity: 0;
+                filter: brightness(0) invert(1);
+            }
+            100% {
+                transform: translate(0, 0);
+                opacity: 1;
+                filter: brightness(0) invert(1);
+            }
+        }
+
+        .teklif-btn img {
+            width: 18px;
+            height: 18px;
+            filter: brightness(0) opacity(0.5);
+            z-index: 2;
+        }
+
+        .teklif-btn:hover img {
+            animation: pencilExit 0.2s ease forwards, 
+                       pencilEnter 0.2s ease 0.3s forwards;
+        }
+
+        .psikolog-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 100px;
+            background: #F3F4F6;
+            color: #1F2937;
+            padding: 14px 17px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            width: 223px;
+            height: 48px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .psikolog-btn:hover {
+            background: #E5E7EB;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @media (max-width: 1410px) {
+            .psikolog-btn {
+                width: 200px;
+            }
+        }
+
+        .bg-red-500 {
+            background-color: #EF4444; /* Tailwind'in bg-red-500 rengi */
+        }
+
+        .thisButton {
+            position: relative;
+            display: inline-block;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            outline: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .buttonBack {
+            display: block;
+            background: transparent;
+            border-radius: 999px;
+            border: 2px dashed #E61111;
+            padding: 3px;
+            position: relative;
+            transition: box-shadow 0.3s;
+        }
+
+        .buttonFront {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 999px;
+            padding: 0 24px 0 24px;
+            min-width: 200px;
+            height: 48px;
+            position: relative;
+            z-index: 1;
+            transition: background 0.3s;
+        }
+
+        .buttonTitle {
+            color: #E61111;
+            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-right: 16px;
+        }
+
+        .insideIcon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(230,17,17,0.18);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            position: relative;
+            z-index: 2;
+            transition: background 0.3s;
+        }
+
+        .insideIcon i {
+            color: #E61111;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .buttonFront:hover .insideIcon i {
+            transform: translateX(4px) scale(1.1);
+        }
+
+        .outsideIcon {
+            display: none; /* Efekt için JS ile kullanılabilir */
+        }
+    </style>
+</head>
+<body class="bg-white">
+    <div id="container" class="relative    ">
+
+
+        <nav class="bg-white border-b font-dmsans text-base relative z-30 ">
+            <!-- Overlay -->
+            <div id="nav-overlay" class="nav-overlay z-20"></div>
+            
+            <div class="w-screen mx-33 mx-auto px-4     ">
+                <div class="flex justify-between  3xl:justify-around    items-center h-[73px]   ">
+                    <!-- Logo -->
+                    <a href="#" class="flex-shrink-0">
+                        <img src="assets/image/logo.svg" alt="Sento Logo" class="h-[68px] logo-hover  3xl:w-[103px]     ">
+                    </a>
+
+                    <!-- Desktop menüm işte -->
+                    <div id="navbar" class="hidden md:flex space-x-3 lg:mr-[12rem] coco:space-x-2 3xl:flex 3xl:mr-[0] lg:hidden md:hidden border-[1px] border-solid border-gray-400 coco:px-[10px] px-[32px] py-[2px] rounded-full font-dmsans">
+                        <div class="relative dropdown-trigger">
+                            <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600] flex items-center">
+                                Kurumsal
+                                <svg class="ml-2 transition-transform duration-300 dropdown-trigger:hover:rotate-180" width="12" height="8" viewBox="0 0 8 5" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.38271 4.48379L4.77998 4.08653L7.59248 1.27402L7.9915 0.875002L7.19521 0.0787125L6.79795 0.475978L4.38271 2.89121L1.96748 0.477736L1.57021 0.0787125L0.773926 0.875002L1.17119 1.27227L3.98369 4.08477L4.38271 4.48379Z"
+                                      fill="#E61111"
+                                      stroke="#E61111"
+                                      stroke-width="0.5"
+                                      stroke-linejoin="round"
+                                    />
+                                </svg>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">Hakkımızda</a>
+                                <a href="#" class="dropdown-item">Misyon & Vizyon & Değerler</a>
+                            </div>
+                        </div>
+                        
+                        <div class="relative dropdown-trigger">
+                            <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600] flex items-center">
+                                Hizmetlerimiz
+                                <svg class="ml-2" width="12" height="8" viewBox="0 0 8 5" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M4.38271 4.48379L4.77998 4.08653L7.59248 1.27402L7.9915 0.875002L7.19521 0.0787125L6.79795 0.475978L4.38271 2.89121L1.96748 0.477736L1.57021 0.0787125L0.773926 0.875002L1.17119 1.27227L3.98369 4.08477L4.38271 4.48379Z"
+                                      fill="#E61111"
+                                      stroke="#E61111"
+                                      stroke-width="0.5"
+                                      stroke-linejoin="round"
+                                    />
+                                </svg>
+                            </a>
+                            <div class="dropdown-menu">
+                                <a href="#" class="dropdown-item">Çalışan Destek Programı</a>
+                                <a href="#" class="dropdown-item">İş Yeri Psikoloğu</a>
+                                <a href="#" class="dropdown-item">Travma Sonrası Destek Programı</a>
+                                <a href="#" class="dropdown-item">Kurumsal Söyleşiler</a>
+                                <a href="#" class="dropdown-item">Psikolojik Güvenlik Politikaları</a>
+                            </div>
+                        </div>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">Blog</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">Referanslarımız</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">Kariyer</a>
+                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">İletişim</a>
+                    </div>
+
+                    <!-- Desktop Buttons -->
+                    <div id="buttonlar" class="hidden coco:flex md:flex space-x-4 md:hidden lg:hidden items-center">
+                        <button id="psikolog" class="bg-[#F3F4F6] text-[#1F2937] px-4 py-2 rounded-full text-[13px] font-semibold hover:bg-gray-200 transition-all duration-300">
+                            PSİKOLOG GİRİŞİ
+                        </button>
+                        <button id="hizliteklif" class="teklif-btn">
+                            <span class="text-part">HIZLI TEKLİF TALEBİ</span>
+                            <div class="icon-part">
+                                <img src="assets/image/kalem.svg" alt="Kalem">
+                            </div>
+                        </button>
+                    </div>
+
+                    <!-- Mobile menu button -->
+                    <button id="mobile-menu-button" class="   coco:hidden   inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500 z-50">
+                        <span class="sr-only">Ana menüyü aç</span>
+                        <svg class="menu-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 27.85 28.33">
+                            <defs>
+                                <style>.cls-1{fill:red;}</style>
+                            </defs>
+                            <g id="Layer_2" data-name="Layer 2">
+                                <g id="Layer_1-2" data-name="Layer 1">
+                                    <rect class="cls-1" width="11.85" height="11.85" rx="3.51"></rect>
+                                    <rect class="cls-1" y="16.3" width="11.85" height="11.85" rx="3.51"></rect>
+                                    <rect class="cls-1" x="16" y="16.48" width="11.85" height="11.85" rx="3.51"></rect>
+                                    <path class="cls-1" d="M24.34,2.18a1.51,1.51,0,0,1,1.51,1.51V8.52A1.52,1.52,0,0,1,24.34,10H19.51A1.52,1.52,0,0,1,18,8.52V3.69a1.51,1.51,0,0,1,1.51-1.51h4.83m0-2H19.51A3.51,3.51,0,0,0,16,3.69V8.52A3.51,3.51,0,0,0,19.51,12h4.83a3.51,3.51,0,0,0,3.51-3.51V3.69A3.51,3.51,0,0,0,24.34.18Z"></path>
+                                </g>
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="mobile-menu hidden fixed inset-0 z-50">
+                <button id="close-menu-button" class="close-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#E61111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="mobile-menu-content">
+                    <div class="mobile-logo">
+                        <img src="assets/image/logo.svg" alt="Sento Logo" class="h-8 mx-auto">
+                    </div>
+                    
+                    <nav class="mobile-nav">
+                        <div class="nav-item">
+                            <a href="#" class="flex justify-between items-center" data-submenu="kurumsal">
+                                Kurumsal
+                                <svg class="transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </a>
+                            <div class="submenu" id="kurumsal-submenu">
+                                <a href="#">Hakkımızda</a>
+                                <a href="#">Misyon & Vizyon & Değerler</a>
+                            </div>
+                        </div>
+
+                        <div class="nav-item">
+                            <a href="#" class="flex justify-between items-center" data-submenu="hizmetlerimiz">
+                                Hizmetlerimiz
+                                <svg class="transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </a>
+                            <div class="submenu" id="hizmetlerimiz-submenu">
+                                <a href="#">Çalışan Destek Programı</a>
+                                <a href="#">İş Yeri Psikoloğu</a>
+                                <a href="#">Travma Sonrası Destek Programı</a>
+                                <a href="#">Kurumsal Söyleşiler</a>
+                                <a href="#">Psikolojik Güvenlik Politikaları</a>
+                            </div>
+                        </div>
+
+                        <a href="#" class="nav-link">Blog</a>
+                        <a href="#" class="nav-link">Referanslarımız</a>
+                        <a href="#" class="nav-link">Kariyer</a>
+                        <a href="#" class="nav-link">İletişim</a>
+                    </nav>
+
+                    <div class="mobile-buttons">
+                        <button class="psikolog-btn">
+                            PSİKOLOG GİRİŞİ
+                        </button>
+                        <button class="teklif-btn">
+                            <span>TEKLİF TALEBİ</span>
+                            <img src="assets/image/kalem.svg" alt="Kalem" class="w-4 h-4">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+
+        <div id="section" class="max-w-[96%] bg-[#e61111] flex md:flex-row   justify-between  md:items-end md:pl-12     items-center h-[74vh] mt-4 rounded-3xl min-w-[300px] mx-auto">
+            <div class=" flex items-center justify-center h-full  ">
+            <h1 class="text-white font-['Plus_Jakarta_Sans'] font-semibold text-4xl sm:text-5xl xl:text-6xl leading-[1.1] mb-6   lg:text-[65px]  lg:leading-[70px]     ">
+                <span class="block pb-1 font-['Plus_Jakarta_Sans'] font-medium text-[#EFF1F2] text-[33px] leading-[40px]   lg:text-[65px]    lg:leading-[70px]   ">Çalışan refahı için</span>
+                <span class="block pb-1 mt-4 font-['Plus_Jakarta_Sans'] font-medium text-[#EFF1F2] text-[33px] leading-[40px]  lg:text-[65px] lg:leading-[70px]       ">çıtayı yükseltmeye</span>
+                <span class="block pb-1 mt-4 font-['Plus_Jakarta_Sans'] font-medium text-[#EFF1F2] text-[33px] leading-[40px]   lg:text-[65px]  lg:leading-[70px]     ">kararlıyız.</span>    
+                <p class="text-white font-['Plus_Jakarta_Sans'] font-semibold text-[15px] mt-6">Bize Katılmanın Zamanı Geldi</p>
+
+            <button class="thisButton">
+                <span class="buttonBack">
+                    <span class="buttonFront">
+                        <span class="buttonTitle">HADİ KONUŞALIM</span>
+                        <span class="insideIcon">
+                            <i class="fas fa-arrow-right"></i>
+                        </span>
+                    </span>
+                    <!-- Çapraz çizgi için SVG -->
+                    <svg class="diagonalLine" width="100%" height="100%" style="position:absolute;top:0;left:0;z-index:0;pointer-events:none;">
+                        <line x1="70%" y1="0" x2="100%" y2="100%" stroke="#fff4" stroke-width="3"/>
+                    </svg>
+                </span>
+            </button>
+
+                
+            </div>
+            
+            <div id="foto">
+                <img src="assets/image/kadin.png" class="w-[340px] md:block   hidden  lg:w-[500px]    "  >
+            </div>
+
+            
+        </div>
+
+           
+
+
+
+
+        </div>
+    </div>
+    
+
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuButton = document.getElementById('mobile-menu-button');
+            const closeButton = document.getElementById('close-menu-button');
+            const menuIcon = menuButton.querySelector('.menu-icon');
+            
+            // Submenu functionality
+            const navItems = document.querySelectorAll('.nav-item > a');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const submenuId = item.getAttribute('data-submenu') + '-submenu';
+                    const submenu = document.getElementById(submenuId);
+                    const arrow = item.querySelector('svg');
+                    
+                    // Close other submenus
+                    document.querySelectorAll('.submenu').forEach(menu => {
+                        if (menu.id !== submenuId && menu.classList.contains('active')) {
+                            menu.classList.remove('active');
+                            menu.previousElementSibling.querySelector('svg').classList.remove('rotate-180');
+                        }
+                    });
+                    
+                    // Toggle current submenu
+                    submenu.classList.toggle('active');
+                    arrow.classList.toggle('rotate-180');
+                });
+            });
+
+            function openMenu() {
+                mobileMenu.classList.remove('hidden');
+                setTimeout(() => {
+                    mobileMenu.classList.add('active');
+                }, 10);
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeMenu() {
+                mobileMenu.classList.remove('active');
+                // Close all submenus
+                document.querySelectorAll('.submenu').forEach(submenu => {
+                    submenu.classList.remove('active');
+                });
+                document.querySelectorAll('.nav-item > a svg').forEach(arrow => {
+                    arrow.classList.remove('rotate-180');
+                });
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                }, 300);
+                document.body.style.overflow = '';
+            }
+
+            menuButton.addEventListener('click', openMenu);
+            closeButton.addEventListener('click', closeMenu);
+        });
+
+        // Enhanced navbar hover functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navbar = document.getElementById('navbar');
+            const overlay = document.getElementById('nav-overlay');
+            let timeoutId = null;
+
+            function showOverlay() {
+                clearTimeout(timeoutId);
+                overlay.classList.add('active');
+            }
+
+            function hideOverlay() {
+                timeoutId = setTimeout(() => {
+                    overlay.classList.remove('active');
+                }, 100); // Small delay to prevent flickering
+            }
+
+            // Mouse enter/leave events for navbar
+            navbar.addEventListener('mouseenter', showOverlay);
+            navbar.addEventListener('mouseleave', hideOverlay);
+
+            // Mouse enter/leave events for overlay
+            overlay.addEventListener('mouseenter', () => {
+                clearTimeout(timeoutId);
+            });
+            overlay.addEventListener('mouseleave', hideOverlay);
+
+            // Click outside to close
+            document.addEventListener('click', (e) => {
+                if (!navbar.contains(e.target) && !overlay.contains(e.target)) {
+                    hideOverlay();
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Nested submenu functionality
+            const nestedTriggers = document.querySelectorAll('.nested-submenu-trigger');
+            
+            nestedTriggers.forEach(trigger => {
+                trigger.addEventListener('mouseenter', () => {
+                    // Close other nested submenus
+                    document.querySelectorAll('.nested-submenu').forEach(menu => {
+                        if (menu !== trigger.nextElementSibling) {
+                            menu.classList.remove('active');
+                        }
+                    });
+                    
+                    // Open current nested submenu
+                    const nestedSubmenu = trigger.nextElementSibling;
+                    nestedSubmenu.classList.add('active');
+                });
+            });
+
+            // Close nested submenus when leaving the parent submenu
+            document.querySelectorAll('.submenu').forEach(submenu => {
+                submenu.addEventListener('mouseleave', () => {
+                    submenu.querySelectorAll('.nested-submenu').forEach(nested => {
+                        nested.classList.remove('active');
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
