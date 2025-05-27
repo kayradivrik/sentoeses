@@ -12,9 +12,29 @@
     {
       "src": "dist/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "buildCommand": "npm run build",
+        "outputDirectory": "dist"
+      }
     }
   ],
   "routes": [
+    {
+      "src": "/contact",
+      "dest": "/contact.html"
+    },
+    {
+      "src": "/assets/(.*)",
+      "dest": "/assets/$1"
+    },
+    {
+      "src": "/dist/(.*)",
+      "dest": "/dist/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/$1"

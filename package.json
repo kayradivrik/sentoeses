@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css",
+    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --minify",
     "dev": "vite",
     "vercel-build": "npm run build"
   },
