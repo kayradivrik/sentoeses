@@ -5,8 +5,9 @@
   "main": "index.js",
   "type": "commonjs",
   "scripts": {
-    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css --watch",
-    "dev": "vite"
+    "build": "tailwindcss -i ./src/input.css -o ./dist/output.css",
+    "dev": "vite",
+    "vercel-build": "npm run build"
   },
   "keywords": [],
   "author": "",
