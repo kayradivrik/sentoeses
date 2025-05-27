@@ -1757,176 +1757,140 @@
 
 
     <script>
-        // Mobile menu functionality with error handling
+        // Utility function to safely get element
+        function getElement(id) {
+            const element = document.getElementById(id);
+            if (!element) {
+                console.warn(`Element with id "${id}" not found`);
+                return null;
+            }
+            return element;
+        }
+
+        // Mobile menu functionality
         document.addEventListener('DOMContentLoaded', function () {
-            try {
-                const mobileMenu = document.getElementById('mobile-menu');
-                const menuButton = document.getElementById('mobile-menu-button');
-                const closeButton = document.getElementById('close-menu-button');
-                const menuIcon = menuButton?.querySelector('.menu-icon');
+            const mobileMenu = getElement('mobile-menu');
+            const menuButton = getElement('mobile-menu-button');
+            const closeButton = getElement('close-menu-button');
+            const menuIcon = menuButton?.querySelector('.menu-icon');
 
-                if (!mobileMenu || !menuButton || !closeButton) {
-                    console.warn('Mobile menu elements not found');
-                    return;
-                }
+            if (!mobileMenu || !menuButton || !closeButton) return;
 
-                // Submenu functionality with error handling
-                const navItems = document.querySelectorAll('.nav-item > a');
+            // Submenu functionality
+            const navItems = document.querySelectorAll('.nav-item > a');
 
-                navItems.forEach(item => {
-                    item.addEventListener('click', (e) => {
-                        try {
-                            e.preventDefault();
-                            const submenuId = item.getAttribute('data-submenu') + '-submenu';
-                            const submenu = document.getElementById(submenuId);
-                            const arrow = item.querySelector('svg');
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const submenuId = item.getAttribute('data-submenu') + '-submenu';
+                    const submenu = getElement(submenuId);
+                    const arrow = item.querySelector('svg');
 
-                            if (!submenu || !arrow) return;
+                    if (!submenu || !arrow) return;
 
-                            // Close other submenus
-                            document.querySelectorAll('.submenu').forEach(menu => {
-                                if (menu.id !== submenuId && menu.classList.contains('active')) {
-                                    menu.classList.remove('active');
-                                    const prevArrow = menu.previousElementSibling?.querySelector('svg');
-                                    if (prevArrow) prevArrow.classList.remove('rotate-180');
-                                }
-                            });
-
-                            // Toggle current submenu
-                            submenu.classList.toggle('active');
-                            arrow.classList.toggle('rotate-180');
-
-                            // Animate submenu items
-                            if (submenu.classList.contains('active')) {
-                                const items = submenu.querySelectorAll('a');
-                                items.forEach((item, index) => {
-                                    item.style.transitionDelay = `${index * 0.1}s`;
-                                });
-                            }
-                        } catch (error) {
-                            console.error('Error in submenu toggle:', error);
+                    // Close other submenus
+                    document.querySelectorAll('.submenu').forEach(menu => {
+                        if (menu.id !== submenuId && menu.classList.contains('active')) {
+                            menu.classList.remove('active');
+                            const prevArrow = menu.previousElementSibling?.querySelector('svg');
+                            if (prevArrow) prevArrow.classList.remove('rotate-180');
                         }
                     });
+
+                    // Toggle current submenu
+                    submenu.classList.toggle('active');
+                    arrow.classList.toggle('rotate-180');
+
+                    // Animate submenu items
+                    if (submenu.classList.contains('active')) {
+                        const items = submenu.querySelectorAll('a');
+                        items.forEach((item, index) => {
+                            item.style.transitionDelay = `${index * 0.1}s`;
+                        });
+                    }
                 });
+            });
 
-                function openMenu() {
-                    try {
-                        mobileMenu.classList.remove('hidden');
-                        requestAnimationFrame(() => {
-                            mobileMenu.classList.add('active');
-                        });
-                        document.body.style.overflow = 'hidden';
-                    } catch (error) {
-                        console.error('Error opening menu:', error);
-                    }
-                }
-
-                function closeMenu() {
-                    try {
-                        mobileMenu.classList.remove('active');
-                        // Close all submenus
-                        document.querySelectorAll('.submenu').forEach(submenu => {
-                            submenu.classList.remove('active');
-                        });
-                        document.querySelectorAll('.nav-item > a svg').forEach(arrow => {
-                            arrow.classList.remove('rotate-180');
-                        });
-                        setTimeout(() => {
-                            mobileMenu.classList.add('hidden');
-                        }, 500); // Match transition duration
-                        document.body.style.overflow = '';
-                    } catch (error) {
-                        console.error('Error closing menu:', error);
-                    }
-                }
-
-                menuButton.addEventListener('click', openMenu);
-                closeButton.addEventListener('click', closeMenu);
-            } catch (error) {
-                console.error('Error in mobile menu initialization:', error);
+            function openMenu() {
+                mobileMenu.classList.remove('hidden');
+                requestAnimationFrame(() => {
+                    mobileMenu.classList.add('active');
+                });
+                document.body.style.overflow = 'hidden';
             }
+
+            function closeMenu() {
+                mobileMenu.classList.remove('active');
+                // Close all submenus
+                document.querySelectorAll('.submenu').forEach(submenu => {
+                    submenu.classList.remove('active');
+                });
+                document.querySelectorAll('.nav-item > a svg').forEach(arrow => {
+                    arrow.classList.remove('rotate-180');
+                });
+                setTimeout(() => {
+                    mobileMenu.classList.add('hidden');
+                }, 500);
+                document.body.style.overflow = '';
+            }
+
+            menuButton.addEventListener('click', openMenu);
+            closeButton.addEventListener('click', closeMenu);
         });
 
-        // Enhanced navbar hover functionality with performance improvements
+        // Navbar hover functionality
         document.addEventListener('DOMContentLoaded', function () {
-            try {
-                const navbar = document.getElementById('navbar');
-                const overlay = document.getElementById('nav-overlay');
-                let timeoutId = null;
+            const navbar = getElement('navbar');
+            const overlay = getElement('nav-overlay');
+            let timeoutId = null;
 
-                if (!navbar || !overlay) {
-                    console.warn('Navbar elements not found');
-                    return;
-                }
+            if (!navbar || !overlay) return;
 
-                function showOverlay() {
-                    clearTimeout(timeoutId);
-                    overlay.classList.add('active');
-                }
-
-                function hideOverlay() {
-                    timeoutId = setTimeout(() => {
-                        overlay.classList.remove('active');
-                    }, 100);
-                }
-
-                // Use passive event listeners for better performance
-                navbar.addEventListener('mouseenter', showOverlay, { passive: true });
-                navbar.addEventListener('mouseleave', hideOverlay, { passive: true });
-                overlay.addEventListener('mouseenter', () => {
-                    clearTimeout(timeoutId);
-                }, { passive: true });
-                overlay.addEventListener('mouseleave', hideOverlay, { passive: true });
-
-                // Click outside to close with error handling
-                document.addEventListener('click', (e) => {
-                    try {
-                        if (!navbar.contains(e.target) && !overlay.contains(e.target)) {
-                            hideOverlay();
-                        }
-                    } catch (error) {
-                        console.error('Error in click handler:', error);
-                    }
-                }, { passive: true });
-            } catch (error) {
-                console.error('Error in navbar initialization:', error);
+            function showOverlay() {
+                clearTimeout(timeoutId);
+                overlay.classList.add('active');
             }
+
+            function hideOverlay() {
+                timeoutId = setTimeout(() => {
+                    overlay.classList.remove('active');
+                }, 100);
+            }
+
+            navbar.addEventListener('mouseenter', showOverlay);
+            navbar.addEventListener('mouseleave', hideOverlay);
+            overlay.addEventListener('mouseenter', () => {
+                clearTimeout(timeoutId);
+            });
+            overlay.addEventListener('mouseleave', hideOverlay);
+
+            // Click outside to close
+            document.addEventListener('click', (e) => {
+                if (!navbar.contains(e.target) && !overlay.contains(e.target)) {
+                    hideOverlay();
+                }
+            });
         });
 
-        // Language Dropdown functionality with error handling
+        // Language Dropdown functionality
         function setupLanguageDropdown(triggerId, menuId) {
-            try {
-                const trigger = document.getElementById(triggerId);
-                const menu = document.getElementById(menuId);
-                
-                if (!trigger || !menu) {
-                    console.warn(`Language dropdown elements not found: ${triggerId}, ${menuId}`);
-                    return;
+            const trigger = getElement(triggerId);
+            const menu = getElement(menuId);
+            
+            if (!trigger || !menu) return;
+
+            trigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const triggerHeight = trigger.offsetHeight;
+                menu.style.bottom = `${triggerHeight}px`;
+                menu.classList.toggle('hidden');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!menu.contains(e.target) && !trigger.contains(e.target)) {
+                    menu.classList.add('hidden');
                 }
-
-                trigger.addEventListener('click', (e) => {
-                    try {
-                        e.stopPropagation();
-                        const triggerHeight = trigger.offsetHeight;
-                        menu.style.bottom = `${triggerHeight}px`;
-                        menu.classList.toggle('hidden');
-                    } catch (error) {
-                        console.error('Error in language dropdown toggle:', error);
-                    }
-                }, { passive: true });
-
-                document.addEventListener('click', (e) => {
-                    try {
-                        if (!menu.contains(e.target) && !trigger.contains(e.target)) {
-                            menu.classList.add('hidden');
-                        }
-                    } catch (error) {
-                        console.error('Error in language dropdown click handler:', error);
-                    }
-                }, { passive: true });
-            } catch (error) {
-                console.error('Error in language dropdown setup:', error);
-            }
+            });
         }
 
         // Initialize language dropdowns
