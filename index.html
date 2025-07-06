@@ -4,7 +4,10 @@
 <head>  
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
     <meta charset="UTF-8">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<link rel="stylesheet" href="src/coco.css">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
@@ -12,720 +15,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sento</title>
     <link href="./dist/output.css" rel="stylesheet">
-    <style>
-        /* Base font styles */
-        body {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 1rem; /* 16px */
-            line-height: 1.5;
-            color: #333;
-        }
-
-        h1, h2, h3, h4, h5, h6 {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 700;
-        }
-
-        .button-text {
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 500;
-            font-size: 0.875rem; /* 14px */
-        }
-
-        .nav-link {
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 500;
-            font-size: 0.9375rem; /* 15px */
-        }
-
-        .section-title {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 700;
-            font-size: 2rem; /* 32px */
-        }
-
-        .section-subtitle {
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 400;
-            font-size: 1.125rem; /* 18px */
-        }
-
-        .footer-text {
-            font-family: 'DM Sans', sans-serif;
-            font-weight: 400;
-            font-size: 0.875rem; /* 14px */
-        }
-
-        .footer-title {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            font-weight: 700;
-            font-size: 1.125rem; /* 18px */
-        }
-
-#sentoiyiki{
-    background-image: url('assets/image/true.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-}
-
-        .backdrop-blur {
-            backdrop-filter: blur(0.5rem); /* 8px */
-            -webkit-backdrop-filter: blur(0.5rem); /* 8px */
-        }
-
-        /* Logo bounce animation */
-        @keyframes logoBounce {
-            0% {
-                transform: translateY(0);
-            }
-
-            30% {
-                transform: translateY(-0.125rem); /* -2px */
-            }
-
-            60% {
-                transform: translateY(0.0625rem); /* 1px */
-            }
-
-            100% {
-                transform: translateY(-0.0625rem); /* -1px */
-            }
-        }
-
-        .logo-hover {
-            transition: transform 0.3s ease;
-        }
-
-        .logo-hover:hover {
-            animation: logoBounce 1.2s ease-in-out infinite;
-        }
-
-        .slider-button {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .slider-button::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgb(220 38 38);
-            transition: all 0.3s ease;
-            z-index: 1;
-            border-radius: 9999px;
-        }
-
-        .slider-button:hover::before {
-            left: 0;
-        }
-
-        .slider-button span,
-        .slider-button img {
-            position: relative;
-            z-index: 2;
-            transition: all 0.3s ease;
-        }
-
-        .slider-button:hover span {
-            color: white;
-        }
-
-        .slider-button:hover img {
-            filter: brightness(0) invert(1);
-        }
-
-        /* Overlay styles */
-        .nav-overlay {
-            opacity: 0;
-            visibility: hidden;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            transition: all 0.3s ease;
-            pointer-events: none;
-            transform: scaleX(0);
-            transform-origin: left;
-            z-index: 20;
-        }
-
-        .nav-overlay.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: none;
-            transform: scaleX(1);
-        }
-
-        #navbar {
-            position: relative;
-            z-index: 40;
-            background: rgba(255, 255, 255, 0.6) !important;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border: 1px solid rgba(209, 213, 219, 0.6);
-        }
-
-        /* Prevent cursor interaction with overlay */
-        .nav-overlay::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-        }
-
-        /* Dropdown styles */
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(230, 17, 17, 0.95);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            min-width: 338px;
-            border-radius: 15px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(10px);
-            transition: all 0.3s ease;
-            padding: 1rem;
-            margin-top: 0.75rem;
-        }
-
-        .dropdown-menu::before {
-            content: '';
-            position: absolute;
-            top: -8px;
-            left: 20px;
-            width: 16px;
-            height: 16px;
-            background: rgba(230, 17, 17, 0.95);
-            transform: rotate(45deg);
-            border-radius: 2px;
-        }
-
-        .dropdown-trigger:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-item {
-            display: block;
-            padding: 0.75rem 1rem;
-            color: white;
-            position: relative;
-            transform: translateX(0);
-            transition: all 0.3s ease;
-            font-size: 16px;
-            line-height: 1.5;
-            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-        }
-
-        .dropdown-item:hover {
-            transform: translateX(10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-        }
-
-        .dropdown-item::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 1rem;
-            right: 1rem;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        .dropdown-item:last-child::after {
-            display: none;
-        }
-
-        /* Hamburger menu animation */
-        .menu-icon {
-            width: 28px;
-            height: 28px;
-            transition: all 0.3s ease;
-        }
-
-        .menu-icon.active {
-            transform: rotate(90deg);
-        }
-
-        .menu-icon .cls-1 {
-            fill: #E61111;
-            transition: fill 0.3s ease;
-        }
-
-        .menu-icon:hover .cls-1 {
-            fill: #ff0000;
-        }
-
-        /* Mobile menu styles */
-        .mobile-menu {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transform: translateY(-100%);
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .mobile-menu.active {
-            transform: translateY(0);
-        }
-
-        .close-icon {
-            position: absolute;
-            top: 1.5rem;
-            right: 1.5rem;
-            width: 24px;
-            height: 24px;
-            cursor: pointer;
-            z-index: 60;
-        }
-
-        .mobile-menu-content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            padding: 2rem;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu.active .mobile-menu-content {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .mobile-logo {
-            margin-top: 2rem;
-            margin-bottom: 3rem;
-            text-align: center;
-        }
-
-        .mobile-nav {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-bottom: auto;
-        }
-
-        .nav-item > a {
-            font-size: 1.125rem;
-            color: #1F2937;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nav-item > a svg {
-            width: 16px;
-            height: 16px;
-            transition: transform 0.3s ease;
-        }
-
-        .submenu {
-            background: #E61111;
-            border-radius: 1rem;
-            padding: 1rem;
-            margin-top: 0.5rem;
-            display: none;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-        }
-
-        .submenu.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .submenu a {
-            color: white;
-            padding: 0.75rem 1rem;
-            font-size: 1rem;
-            display: block;
-            transition: transform 0.3s ease;
-        }
-
-        .submenu a:hover {
-            transform: translateX(10px);
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-        }
-
-        .mobile-buttons {
-            margin-top: auto;
-            padding: 2rem 0;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .mobile-buttons button {
-            width: 100%;
-            padding: 0.875rem;
-            border-radius: 0.5rem;
-            font-size: 0.875rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-buttons .psikolog-btn {
-            background: #F3F4F6;
-            color: #1F2937;
-        }
-
-        .mobile-buttons .teklif-btn {
-            background: white;
-            color: #E61111;
-            border: 1px solid #E61111;
-            border-radius: 9999px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .teklif-btn {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            border-radius: 100px;
-            overflow: hidden;
-            background: white;
-            box-shadow: 0 4px 10px rgba(230, 17, 17, 0.2);
-            width: 224px;
-            height: 48px;
-        }
-
-        .teklif-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #E61111;
-            clip-path: polygon(0 0, 176px 0, 176px 100%, 0 100%);
-        }
-
-        .teklif-btn::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: #E61111;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .teklif-btn:hover::after {
-            left: 0;
-        }
-
-        .teklif-btn .text-part {
-            position: relative;
-            padding: 12px 20px;
-            color: white;
-            font-weight: 600;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            white-space: nowrap;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-        }
-
-        .teklif-btn .icon-part {
-            position: relative;
-            width: 48px;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            overflow: hidden;
-        }
-
-        @keyframes pencilExit {
-            0% {
-                transform: translate(0, 0);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translate(20px, -20px);
-                opacity: 0;
-            }
-        }
-
-        @keyframes pencilEnter {
-            0% {
-                transform: translate(20px, -20px);
-                opacity: 0;
-                filter: brightness(0) invert(1);
-            }
-
-            100% {
-                transform: translate(0, 0);
-                opacity: 1;
-                filter: brightness(0) invert(1);
-            }
-        }
-
-        .teklif-btn img {
-            width: 18px;
-            height: 18px;
-            filter: brightness(0) opacity(0.5);
-            z-index: 2;
-        }
-
-        .teklif-btn:hover img {
-            animation: pencilExit 0.2s ease forwards,
-                pencilEnter 0.2s ease 0.3s forwards;
-        }
-
-        .psikolog-btn {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 100px;
-            background: #F3F4F6;
-            color: #1F2937;
-            padding: 14px 17px;
-            font-size: 14px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            transition: all 0.3s ease;
-            width: 223px;
-            height: 48px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        }
-
-        .psikolog-btn:hover {
-            background: #E5E7EB;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        @media (max-width: 1410px) {
-            .psikolog-btn {
-                width: 200px;
-            }
-        }
-
-        .bg-red-500 {
-            background-color: #EF4444;
-            /* Tailwind'in bg-red-500 rengi */
-        }
-
-        .thisButton {
-            position: relative;
-            display: inline-block;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-            outline: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        .buttonBack {
-            display: block;
-            background: transparent;
-            border-radius: 999px;
-            border: 2px dashed #E61111;
-            padding: 3px;
-            position: relative;
-            transition: box-shadow 0.3s;
-        }
-
-        .buttonFront {
-            display: flex;
-            align-items: center;
-            background: white;
-            border-radius: 999px;
-            padding: 0 24px 0 24px;
-            min-width: 200px;
-            height: 48px;
-            position: relative;
-            z-index: 1;
-            transition: background 0.3s;
-        }
-
-        .buttonTitle {
-            color: #E61111;
-            font-family: 'Plus Jakarta Sans', Arial, sans-serif;
-            font-size: 1.1rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            margin-right: 16px;
-        }
-
-        .insideIcon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(230, 17, 17, 0.18);
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            position: relative;
-            z-index: 2;
-            transition: background 0.3s;
-        }
-
-        .insideIcon i {
-            color: #E61111;
-            font-size: 1.2rem;
-            transition: transform 0.3s;
-        }
-
-        .buttonFront:hover .insideIcon i {
-            transform: translateX(4px) scale(1.1);
-        }
-
-        .outsideIcon {
-            display: none;
-            /* Efekt için JS ile kullanılabilir */
-        }
-
-        .footerButton {
-            @apply text-base relative left-0 transition duration-200 transition-all hover:left-2 cursor-pointer;
-        }
-
-        .background-secondary-dark {
-            background: #E0E0E0;
-        }
-
-        .footer-border {
-            border-color: #AFAFAF80;
-        }
-
-        @keyframes penHover {
-            0% {
-                transform: translate(0, 0); /* Başlangıç pozisyonu */
-                color: #54595F; /* Başlangıç rengi gri */
-                opacity: 1; /* Başlangıçta tam görünür */
-            }
-            49% {
-                transform: translate(10px, -10px); /* Sağ üste daha fazla hareket */
-                color: #54595F; /* Hareket boyunca gri */
-                opacity: 0; /* Hareketin sonunda şeffaf */
-            }
-            50% {
-                transform: translate(10px, -10px); /* Sağ üste pozisyonu koru */
-                color: white; /* Rengi aniden beyaza çevir */
-                opacity: 0; /* Hala şeffaf */
-            }
-             50.1% {
-                transform: translate(10px, -10px); /* Sağ üste pozisyonu koru */
-                color: white; /* Beyaz renk */
-                opacity: 1; /* Birden görünür ol */
-            }
-            100% {
-                transform: translate(0, 0); /* Orijinal pozisyona beyaz olarak dön */
-                color: white; /* Dönüş boyunca beyaz */
-                opacity: 1; /* Tam görünür */
-            }
-        }
-
-        /* Normal durumda ikon stilleri */
-        #pen-icon i {
-            transition: transform 0.3s ease, color 0.3s ease, opacity 0.3s ease; /* Yumuşak geçişler */
-            color: #54595F; /* Başlangıç rengi gri */
-            transform: translate(0, 0); /* Başlangıç pozisyonu */
-            opacity: 1; /* Normalde tam görünür */
-        }
-
-        /* Hover olduğunda animasyonu başlat */
-        button:hover #pen-icon i {
-            animation: penHover 0.3s ease forwards; /* Süre 0.3s olarak ayarlandı */
-        }
-
-        /* Keyframes for pen icon animation */
-        @keyframes penHover {
-            0% {
-                transform: translate(0, 0); /* Başlangıç pozisyonu */
-                color: #54595F; /* Başlangıç rengi gri */
-                opacity: 1; /* Başlangıçta tam görünür */
-            }
-            49% {
-                transform: translate(10px, -10px); /* Sağ üste daha fazla hareket */
-                color: #54595F; /* Hareket boyunca gri */
-                opacity: 0; /* Hareketin sonunda şeffaf */
-            }
-            50% {
-                transform: translate(10px, -10px); /* Sağ üste pozisyonu koru */
-                color: white; /* Rengi aniden beyaza çevir */
-                opacity: 0; /* Hala şeffaf */
-            }
-             50.1% {
-                transform: translate(10px, -10px); /* Sağ üste pozisyonu koru */
-                color: white; /* Beyaz renk */
-                opacity: 1; /* Birden görünür ol */
-            }
-            100% {
-                transform: translate(0, 0); /* Orijinal pozisyona beyaz olarak dön */
-                color: white; /* Dönüş boyunca beyaz */
-                opacity: 1; /* Tam görünür */
-            }
-        }
-
-        /* Styles for the new "HADI KONUŞALIM" button's pen icon */
-        #pen-icon-hadi i {
-            transition: transform 0.3s ease, color 0.3s ease, opacity 0.3s ease; /* Yumuşak geçişler */
-            color: #54595F; /* Başlangıç rengi gri */
-            transform: translate(0, 0); /* Başlangıç pozisyonu */
-            opacity: 1; /* Normalde tam görünür */
-        }
-
-        /* Hover olduğunda animasyonu başlat */
-        button:hover #pen-icon-hadi i /* Apply animation to the new button's icon as well */
-        {
-            animation: penHover 0.3s ease forwards; /* Animasyon süresi hızlandırıldı */
-        }
-
-        .brandSwiper .swiper-slide {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .brandSwiper .swiper-button-next,
-        .brandSwiper .swiper-button-prev {
-            background: #f3f4f6;
-            border-radius: 50%;
-            width: 36px;
-            height: 36px;
-            color: #6b7280;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            top: 50%;
-            transform: translateY(-50%);
-        }
-    </style>
+    
 </head>
 
-<body class="bg-white">
+<body class="bg-white  pt-[73px] ">
     <div id="container" class="relative    ">
 
 
-        <nav class="bg-white/90 border-b font-dmsans text-base relative z-30 sticky top-0">
+        <nav class="bg-white/90 border-b font-dmsans text-base fixed top-0 left-0 w-full bg-white shadow z-50">
             <!-- Overlay -->
             <div id="nav-overlay" class="nav-overlay z-20"></div>
         
@@ -738,49 +35,49 @@
                     </a>
         
                     <!-- Desktop menüm işte -->
-                    <div id="navbar"
-                        class="hidden md:flex space-x-3 lg:mr-[12rem] coco:space-x-2 3xl:flex 3xl:mr-[0] lg:hidden md:hidden border-[1px] border-solid border-gray-400 coco:px-[10px] px-[32px] py-[2px] rounded-full font-dmsans">
-                        <div class="relative dropdown-trigger">
-                            <a href="#"
-                                class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600] flex items-center">
-                                Kurumsal
-                                <svg class="ml-2 transition-transform duration-300"
-                                    width="12" height="8" viewBox="0 0 8 5" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M4.38271 4.48379L4.77998 4.08653L7.59248 1.27402L7.9915 0.875002L7.19521 0.0787125L6.79795 0.475978L4.38271 2.89121L1.96748 0.477736L1.57021 0.0787125L0.773926 0.875002L1.17119 1.27227L3.98369 4.08477L4.38271 4.48379Z"
-                                        fill="#E61111" stroke="#E61111" stroke-width="0.5" stroke-linejoin="round" />
-                                </svg>
-                            </a>
-                            <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item">Hakkımızda</a>
-                                <a href="#" class="dropdown-item">Misyon & Vizyon & Değerler</a>
+                        <div id="navbar"
+                            class="hidden md:flex space-x-3 lg:mr-[12rem] coco:space-x-2 3xl:flex 3xl:mr-[0] lg:hidden md:hidden border-[1px] border-solid border-gray-400 coco:px-[10px] px-[32px] py-[2px] rounded-full font-dmsans">
+                            <div class="relative dropdown-trigger">
+                                <a href="#"
+                                    class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600] flex items-center">
+                                    Kurumsal
+                                    <svg class="ml-2 transition-transform duration-300"
+                                        width="12" height="8" viewBox="0 0 8 5" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M4.38271 4.48379L4.77998 4.08653L7.59248 1.27402L7.9915 0.875002L7.19521 0.0787125L6.79795 0.475978L4.38271 2.89121L1.96748 0.477736L1.57021 0.0787125L0.773926 0.875002L1.17119 1.27227L3.98369 4.08477L4.38271 4.48379Z"
+                                            fill="#E61111" stroke="#E61111" stroke-width="0.5" stroke-linejoin="round" />
+                                    </svg>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="#" class="dropdown-item">Hakkımızda</a>
+                                    <a href="#" class="dropdown-item">Misyon & Vizyon & Değerler</a>
+                                </div>
                             </div>
-                        </div>
-        
-                        <div class="relative dropdown-trigger">
-                            <a href="#"
-                                class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600] flex items-center">
-                                Hizmetlerimiz
-                                <svg class="ml-2 transition-transform duration-300"
-                                    width="12" height="8" viewBox="0 0 8 5" xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M4.38271 4.48379L4.77998 4.08653L7.59248 1.27402L7.9915 0.875002L7.19521 0.0787125L6.79795 0.475978L4.38271 2.89121L1.96748 0.477736L1.57021 0.0787125L0.773926 0.875002L1.17119 1.27227L3.98369 4.08477L4.38271 4.48379Z"
-                                        fill="#E61111" stroke="#E61111" stroke-width="0.5" stroke-linejoin="round" />
-                                </svg>
-                            </a>
-                            <div class="dropdown-menu">
-                                <a href="#" class="dropdown-item dashed">Çalışan Destek Programı</a>
-                                <a href="#" class="dropdown-item dashed">İş Yeri Psikoloğu</a>
-                                <a href="#" class="dropdown-item dashed">Travma Sonrası Destek Programı</a>
-                                <a href="#" class="dropdown-item dashed">Kurumsal Söyleşiler</a>
-                                <a href="#" class="dropdown-item dashed">Psikolojik Güvenlik Politikaları</a>
+            
+                            <div class="relative dropdown-trigger">
+                                <a href="#"
+                                    class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600] flex items-center">
+                                    Hizmetlerimiz
+                                    <svg class="ml-2 transition-transform duration-300"
+                                        width="12" height="8" viewBox="0 0 8 5" xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M4.38271 4.48379L4.77998 4.08653L7.59248 1.27402L7.9915 0.875002L7.19521 0.0787125L6.79795 0.475978L4.38271 2.89121L1.96748 0.477736L1.57021 0.0787125L0.773926 0.875002L1.17119 1.27227L3.98369 4.08477L4.38271 4.48379Z"
+                                            fill="#E61111" stroke="#E61111" stroke-width="0.5" stroke-linejoin="round" />
+                                    </svg>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a href="#" class="dropdown-item dashed">Çalışan Destek Programı</a>
+                                    <a href="#" class="dropdown-item dashed">İş Yeri Psikoloğu</a>
+                                    <a href="#" class="dropdown-item dashed">Travma Sonrası Destek Programı</a>
+                                    <a href="#" class="dropdown-item dashed">Kurumsal Söyleşiler</a>
+                                    <a href="#" class="dropdown-item dashed">Psikolojik Güvenlik Politikaları</a>
+                                </div>
                             </div>
+                            <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">Blog</a>
+                            <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">Referanslarımız</a>
+                            <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">Kariyer</a>
+                            <a href="contact.html" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">İletişim</a>
                         </div>
-                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">Blog</a>
-                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">Referanslarımız</a>
-                        <a href="#" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">Kariyer</a>
-                        <a href="contact.html" class="text-gray-700 hover:text-gray-900 px-2 py-2 text-[15px] font-[600]">İletişim</a>
-                    </div>
         
                     <!-- Desktop Buttons -->
                     <div id="buttonlar" class="hidden coco:flex md:flex space-x-4 md:hidden lg:hidden items-center">
@@ -937,65 +234,38 @@
 
 
         <div id="section"
-            class="max-w-[96%] bg-[#e61111] flex md:flex-row     justify-center  md:items-end md:pl-12 md:justify-between    items-center h-[74vh] mt-4 rounded-3xl min-w-[300px] mx-auto">
+            class="max-w-[96%] bg-[#e61111] flex md:flex-row     justify-center  md:items-end md:pl-12 md:justify-between    items-center h-[85vh] mt-4 rounded-3xl min-w-[300px] mx-auto">
             <div class=" flex items-center justify-center h-full flex-col   ">
                 <div class="hayatbitti mx-12 flex justify-start flex-col">
-                <h1 class="text-white font-['Plus_Jakarta_Sans'] font-semibold text-4xl sm:text-5xl xl:text-6xl leading-[1.9] mb-6   lg:text-[4rem]  lg:leading-[70px] w-[75%]   ">
-                    Çalışan refahı için çıtayı yükseltmeye <br> kararlıyız.
+                <h1 class="text-white font-['Plus_Jakarta_Sans'] font-semibold text-4xl sm:text-5xl xl:text-6xl leading-[1.9] mb-6   lg:text-[4rem]  lg:leading-[70px] w-[85%]   ">
+                    Çalışan refahı için çıtayı yükseltmeye  kararlıyız.
                 </h1>
                 <H6 class="mb-2 text-white">Bize katılmanın zamanı geldi.</H6>
-                <button style="width:220px; height:52px; padding:0; display:inline-block; border-radius:50px; border:1px dashed rgba(230,17,17,0.24); position:relative; cursor:pointer; background-color:transparent; overflow:hidden;" type="submit" onclick="location.href='hizli-teklif-talebi/index.html'">
-                    <div style="width:100%; height:100%; position:relative; overflow:hidden; border-radius:50px;">
-                        <div style="position:absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(239,241,242,1); border-radius:50px;"></div>
-                        <div style="position:absolute; top:5px; left:5px; width:170px; height:42px; background-color:#e61111; border-radius:50px; transition:width 0.3s ease; display:flex; align-items:center; box-shadow:rgba(230,17,17,0.24) 0px 14px 25px 0px;" onmouseover="this.style.width='210px';" onmouseout="this.style.width='170px';">
-                            <span class="button-text" style="color:white; padding-left:25px; z-index:5; font-weight: 800;">Hadi Konuşalım</span>
-                        </div>
-                        <span id="pen-icon" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); font-weight:700; z-index:6;">
-                            <i class="fas fa-pen-alt" style="font-size:16px;"></i>
-                        </span>
-                    </div>
-                </button>
+                <button style="width:220px;  margin-top: 16px;   height:52px; padding:0; display:inline-block; border-radius:50px; border:1px dashed rgba(230,17,17,0.24); position:relative; cursor:pointer; background-color:transparent; overflow:hidden;" type="submit">
+  <div style="width:100%; height:100%; position:relative; overflow:hidden; border-radius:50px;">
+    <div style="position:absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(239,241,242,1); border-radius:50px;"></div>
+    <div style="position:absolute; top:5px; left:5px; width:170px; height:42px; background-color:#e61111; border-radius:50px; transition:width 0.3s ease; display:flex; align-items:center; box-shadow:0px 14px 25px 0px rgba(230,17,17,0.24);">
+      <span style="color:white; padding-left:25px; z-index:5; font-weight:500;">Hadi Konuşalım</span>
+    </div>
+    <span style="position:absolute; right:15px; top:50%; transform:translateY(-50%); font-weight:700; z-index:6;">
+      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M11.5 0.375H12.625V1.5V9.375V10.5H10.375V9.375V4.21758L3.29458 11.2945L2.50005 12.0926L0.907471 10.5L1.702 9.70547L8.78247 2.625H3.62505H2.50005V0.375H3.62505H11.5Z" fill="white"/>
+      </svg>
+    </span>
+  </div>
+</button>
             </div>
                 
                 
-               
-                
-
-                  
-                        
-
                     
             </div>
 
             <div id="foto" class="">
-                <img src="assets/image/kadin.png" class="w-[21.25rem] md:block   hidden   md:w-[800px]   lg:w-[100%]    ">
+                <img src="assets/image/kadin.png" class="w-[30.25rem] md:block   hidden       ">
             </div>
 
 
         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         <div id="section2"
@@ -1066,81 +336,12 @@
                     </div>
                   </div>
                 </div>
-                <script>
-                const swiper = new Swiper('.progress-swiper', {
-                  loop: true,
-                  autoplay: { delay: 4000, disableOnInteraction: false },
-                  slidesPerView: 1,
-                  allowTouchMove: true,
-                  speed: 700,
-                });
-
-                let gsapAnim;
-                function animateProgress(slide) {
-                  if (gsapAnim) gsapAnim.kill(); // Eski animasyonu temizle
-                  const circle = slide.querySelector('.progressCircle');
-                  const text = slide.querySelector('.progressText');
-                  if (!circle || !text) return;
-                  const maxPercent = parseInt(circle.getAttribute('data-value'));
-                  const circumference = 2 * Math.PI * 60;
-                  gsap.set(circle, { strokeDashoffset: circumference });
-                  gsap.set(text, { innerText: '0%' });
-                  gsapAnim = gsap.to(circle, {
-                    strokeDashoffset: circumference - (maxPercent / 100) * circumference,
-                    duration: 1.2,
-                    ease: 'power1.out'
-                  });
-                  gsap.to(text, {
-                    innerText: maxPercent,
-                    duration: 1.2,
-                    snap: { innerText: 1 },
-                    ease: 'power1.out',
-                    onUpdate: function() {
-                      text.innerText = `${Math.round(this.targets()[0].innerText)}%`;
-                    }
-                  });
-                }
-
-                // İlk animasyon
-                setTimeout(() => {
-                  animateProgress(document.querySelector('.swiper-slide-active'));
-                }, 200);
-
-                // Her slide değişiminde animasyon başlat
-                swiper.on('slideChangeTransitionStart', function () {
-                  setTimeout(() => {
-                    animateProgress(document.querySelector('.swiper-slide-active'));
-                  }, 200);
-                });
-                </script>
+               <script src="src/arakod.js"></script>
             </div>
            
 
         </div>
 
-
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-         <!-- Swiper CSS -->
 
 
 <div class="w-full h-[80vh] flex justify-center items-center" id="sentoiyiki">
@@ -1150,8 +351,8 @@
       <img src="assets/image/Logo.png" alt="Logo" class="max-h-[60%]">
     </div>
     <!-- Ortadaki Çizgi -->
-    <div class="relative w-[20%] h-[2px] md:w-[10px] md:h-[70%] flex items-center justify-center">
-      <div class="absolute inset-0 border-2 md:border-2 border-white/40 bg-transparent rounded-full"></div>
+    <div class="relative w-[20%] h-[10px] md:w-[10px] md:h-[70%] flex items-center justify-center">
+      <div class="absolute inset-0 border-1 md:border-2 border-white/40 bg-transparent rounded-full"></div>
     </div>
     <!-- SADECE Sağ Yazı Kısmı Swiper ile -->
     <div class="flex justify-center items-center w-full md:w-1/2">
@@ -1235,81 +436,14 @@
               </div>
             </div>
           </div>
-          <div class="swiper-pagination mt-8"></div>
+          <div class="swiper-pagination "></div>
         </div>
       </div>
     </div>
   </div>
 </div>
-<script>
-  // "İyiki Sento Var!" sliderı
-  var testimonialSwiper = new Swiper('.testimonial-swiper', {
-    loop: true,
-    autoplay: { delay: 4000, disableOnInteraction: false },
-    pagination: { el: '.swiper-pagination', clickable: true },
-    slidesPerView: 1,
-    effect: 'slide',
-    speed: 700,
-  });
-  // Sentoiyiki bölümündeki slider (mySwiper)
-  var mySwiper = new Swiper('.mySwiper', {
-    loop: true,
-    autoplay: { delay: 4000, disableOnInteraction: false },
-    // pagination: { el: '.swiper-pagination', clickable: true },
-    slidesPerView: 1,
-    effect: 'slide',
-    speed: 700,
-  });
-  // Marka sliderı (brandSwiper)
-  var brandSwiper = new Swiper('.brandSwiper', {
-    slidesPerView: 4,
-    spaceBetween: 40,
-    loop: true,
-    navigation: {
-      nextEl: '.swiper-button-next',
-      prevEl: '.swiper-button-prev',
-    },
-    breakpoints: {
-      640: { slidesPerView: 2 },
-      1024: { slidesPerView: 4 }
-    }
-  });
-</script>
-<style>
-  /* Swiper pagination bullets custom style */
-  .testimonial-swiper .swiper-pagination-bullet {
-    width: 18px;
-    height: 18px;
-    background: #e61111;
-    opacity: 0.3;
-    margin: 0 8px !important;
-    border-radius: 50%;
-    transition: opacity 0.2s, transform 0.2s;
-  }
-  .testimonial-swiper .swiper-pagination-bullet-active {
-    opacity: 1;
-    background: #e61111;
-    transform: scale(1.15);
-    box-shadow: 0 0 0 2px #e61111aa;
-  }
-  .brandSwiper .swiper-slide {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  .brandSwiper .swiper-button-next,
-  .brandSwiper .swiper-button-prev {
-    background: #f3f4f6;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    color: #6b7280;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    top: 50%;
-    transform: translateY(-50%);
-  }
-</style>
+
+
 
 
 
@@ -1332,7 +466,7 @@
                  <button class="mx-auto"   style="width:220px; height:52px; padding:0; display:inline-block; border-radius:50px; border:1px dashed rgba(230,17,17,0.24); position:relative; cursor:pointer; background-color:transparent; overflow:hidden;" type="submit" onclick="location.href='hizli-teklif-talebi/index.html'">
                             <div style="width:100%; height:100%; position:relative; overflow:hidden; border-radius:50px;">
                               <div style="position:absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(239,241,242,1); border-radius:50px;"></div>
-                              <div style="position:absolute; top:5px; left:5px; width:170px; height:42px; background-color:#e61111; border-radius:50px; transition:width 0.3s ease; display:flex; align-items:center; box-shadow:rgba(230,17,17,0.24) 0px 14px 25px 0px;";>
+                              <div style="position:absolute; top:5px; left:5px; width:170px; height:42px; background-color:#e61111; border-radius:50px; transition:width 0.3s ease; display:flex; align-items:center; box-shadow:rgba(230,17,17,0.24) 0px 14px 25px 0px;">
                                 <span class="button-text" style="color:white; padding-left:25px; z-index:5;">Bizi Tanı</span>
                               </div>
                               <span id="pen-icon" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); font-weight:700; z-index:6;">
@@ -1345,29 +479,7 @@
             <div id="resim"><img src="assets/image/resim.png" alt="" class=" w-[600px]   "></div>
 </div>
         </div>
-
-
-
-
-<!-- Swiper JS -->
-
- 
-    
-          
-
-
-
-
-     
-
-
-
-
-        
-
-
-
-        <!-- Kız fotoğrafı EN ÜSTE -->
+    <!-- Kız fotoğrafı EN ÜSTE -->
         <div class="kadinfotorafi flex justify-around mx-auto items-center flex-col relative md:hidden     ">
             <img src="assets/image/Kizfoto.svg" alt="" class="max-w-[80%]">
             <!-- Responsive Blur kutu -->
@@ -1387,27 +499,39 @@
 
         <!--BU MASASÜSTÜ İÇİN OLAN FOOTER -->
      
-<footer class="mt-12  flex gap-4  justify-around  mx-auto w-full flex-row  hidden md:flex">
+<footer class="mt-12  flex gap-4    justify-around  mx-auto w-full flex-row  hidden md:flex">
 
-            <div class="flex flex-col gap-4 col-span-4 ">
+            <div class="flex flex-col gap-4 col-span-4    ">
                 <div class="kadinfotorafi  flex justify-center items-center flex-col relative">
                     <img src="assets/image/Kizfoto.svg" alt=""
                         class="max-w-[410px] h-[435px] max-w-[210px]     ">
                     <!-- Responsive Blur kutu -->
-                    <div class="absolute bottom-1/2  translate-x-1/2  translate-y-1/2 
-                                            max-w-[170px] max-h-[170px] rounded-tl-[200px] rounded-tr-[200px] rounded-bl-[180px]
-                                            sm:w-[244px] sm:h-[244px] sm:rounded-tl-[244px] sm:rounded-tr-[244px] sm:rounded-bl-[224px]
-                                            md:w-[300px] md:h-[300px] md:rounded-tl-[300px] md:rounded-tr-[300px] md:rounded-bl-[280px]
-                                            border border-[#EFF1F2] border-opacity-40
-                                            bg-[#EFF1F2]/40
-                                            backdrop-blur-md
-                                            flex items-center justify-center text-black text-xl shadow-lg">
-                        <!-- İçeriği sen dolduracaksın -->
-                    </div>
+                    <div class="absolute bottom-4/4  translate-x-1/2 translate-y-1/2 
+            max-w-[240px] max-h-[240px] rounded-tl-[360px] rounded-tr-[300px] rounded-bl-[260px]
+            sm:w-[320px] sm:h-[320px] sm:rounded-tl-[320px] sm:rounded-tr-[320px] sm:rounded-bl-[300px]
+            md:w-[380px] md:h-[380px] md:rounded-tl-[380px] md:rounded-tr-[380px] md:rounded-bl-[360px]
+            border border-[#EFF1F2] border-opacity-40
+            bg-[#EFF1F2]/40
+            backdrop-blur-md
+            flex items-center justify-center text-black text-xl shadow-lg">
+
+    <button style="width:280px; height:64px; padding:0; display:inline-block; border-radius:60px; border:1px dashed rgba(230,17,17,0.24); position:relative; cursor:pointer; background-color:transparent; overflow:hidden;" type="submit" onclick="location.href='hizli-teklif-talebi/index.html'">
+        <div style="width:100%; height:100%; position:relative; overflow:hidden; border-radius:60px;">
+            <div style="position:absolute; top:0; left:0; width:100%; height:100%; background-color:rgba(239,241,242,1); border-radius:60px;"></div>
+            <div style="position:absolute; top:6px; left:6px; width:210px; height:52px; background-color:#e61111; border-radius:60px; transition:width 0.3s ease; display:flex; align-items:center; box-shadow:rgba(230,17,17,0.24) 0px 14px 25px 0px;" onmouseover="this.style.width='250px';" onmouseout="this.style.width='210px';">
+                <span class="button-text" style="color:white; padding-left:30px; z-index:5; font-size:16px;">HIZLI TEKLİF TALEBİ</span>
+            </div>
+            <span id="pen-icon" style="position:absolute; right:20px; top:50%; transform:translateY(-50%); font-weight:700; z-index:6;">
+                <i class="fas fa-pen-alt" style="font-size:18px;"></i>
+            </span>
+        </div>
+    </button>
+</div>
+
                 </div>
-                <div class="bg-[#EFF1F2] flex flex-col gap-4 m-4 p-8 rounded-2xl max-w-[1057px] mr-12 h-[523px] h-auto  ">
+                <div class="bg-[#EFF1F2] flex flex-col  mx-auto  gap-4 m-4 p- rounded-2xl max-w-[900px] mr-12 h-[523px] h-auto  ">
                     
-                    <div class="flex justify-between m-4 items-center">
+                    <div class="flex justify-between   m-4 items-center">
                        
                         <figure>
                             <img src="assets/image/logo.svg" alt="sento.">
@@ -1441,6 +565,7 @@
                         <div class="w-2 border footer-border  rounded-full h-64"></div>
                         <div class="flex flex-col">
                             <span class="text-red-600 text-sm">Hizmetlerimiz</span>
+                            
                             <ul class="flex flex-col gap-2 mt-2">
                                 <li class="footerButton">
                                     Çalışan Destek Programı
@@ -1485,20 +610,20 @@
                         </div>
                       
                     </div>
-                   <p>Tüm hakları saklıdır. © 2025
+                   <p class="p-6">Tüm hakları saklıdır. © 2025
 
                    </p>
                 </div>
                 
             </div>
-            <div class="col-span-2">
-                <div id="navigationes" class="bg-[#080404] max-w-[90%] rounded-3xl mt-32 p-2  ">
+            <div class="col-span-2  w-[40%]  ">
+                <div id="navigationes" class="bg-[#080404]  mx-auto   max-w-[80%] rounded-3xl mt-32 p-2  ">
                     
 
                     <!-- Sağdaki harita ve iletişim bölümü -->
-                    <div class="bg-black w-[98%] rounded-xl overflow-hidden mx-auto mt-2">
+                    <div class="bg-black w-[95%] rounded-xl overflow-hidden mx-auto mt-2">
                         <!-- Harita -->
-                        <div class="w-[99%] h-[300px] aspect-video h-auto relative mx-auto  ">
+                        <div class="w-[100%] h-[300px] aspect-video h-auto relative mx-auto  ">
                             <iframe class="rounded-xl w-full h-[300px] "
                                 src="https://maps.google.com/maps?q=Sento%20e%C4%9Fitim%20dan%C4%B1%C5%9Fmanl%C4%B1k&t=m&z=14&output=embed&iwloc=near"
                                 frameborder="0" class="w-full h-full" allowfullscreen="">
@@ -1573,22 +698,6 @@
         </footer>
 
 
-
-  
-
-
-
-
-
-  <!---- ara bosluk -->
-
-
-
-
-
-
-
-
   <!--BU MOBİL  İÇİN OLAN FOOTER -->
         <footer class="mt-12 flex gap-4 flex-col-reverse lg:flex-row lg:flex-col w-[90%] mx-auto lg:justify-right md:hidden    ">
            
@@ -1598,7 +707,7 @@
                      class="bg-[#080404] w-full max-w-[98%] sm:max-w-lg md:max-w-xl lg:max-w-2xl xl:max-w-3xl rounded-3xl mt-8 mx-auto p-2   ">
                     <div class="bg-black w-full rounded-xl overflow-hidden    ">
                         <!-- Harita -->
-                        <div class="w-528 aspect-video h-auto relative">
+                        <div class="w-528 aspect-video  h-72 relative">
                             <iframe
                                 src="https://maps.google.com/maps?q=Sento%20e%C4%9Fitim%20dan%C4%B1%C5%9Fmanl%C4%B1k&t=m&z=14&output=embed&iwloc=near"
                                 frameborder="0" class="w-full h-full" allowfullscreen="">
@@ -1756,150 +865,5 @@
     </div>
 
 
-    <script>
-        // Utility function to safely get element
-        function getElement(id) {
-            const element = document.getElementById(id);
-            if (!element) {
-                console.warn(`Element with id "${id}" not found`);
-                return null;
-            }
-            return element;
-        }
-
-        // Mobile menu functionality
-        document.addEventListener('DOMContentLoaded', function () {
-            const mobileMenu = getElement('mobile-menu');
-            const menuButton = getElement('mobile-menu-button');
-            const closeButton = getElement('close-menu-button');
-            const menuIcon = menuButton?.querySelector('.menu-icon');
-
-            if (!mobileMenu || !menuButton || !closeButton) return;
-
-            // Submenu functionality
-            const navItems = document.querySelectorAll('.nav-item > a');
-
-            navItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const submenuId = item.getAttribute('data-submenu') + '-submenu';
-                    const submenu = getElement(submenuId);
-                    const arrow = item.querySelector('svg');
-
-                    if (!submenu || !arrow) return;
-
-                    // Close other submenus
-                    document.querySelectorAll('.submenu').forEach(menu => {
-                        if (menu.id !== submenuId && menu.classList.contains('active')) {
-                            menu.classList.remove('active');
-                            const prevArrow = menu.previousElementSibling?.querySelector('svg');
-                            if (prevArrow) prevArrow.classList.remove('rotate-180');
-                        }
-                    });
-
-                    // Toggle current submenu
-                    submenu.classList.toggle('active');
-                    arrow.classList.toggle('rotate-180');
-
-                    // Animate submenu items
-                    if (submenu.classList.contains('active')) {
-                        const items = submenu.querySelectorAll('a');
-                        items.forEach((item, index) => {
-                            item.style.transitionDelay = `${index * 0.1}s`;
-                        });
-                    }
-                });
-            });
-
-            function openMenu() {
-                mobileMenu.classList.remove('hidden');
-                requestAnimationFrame(() => {
-                    mobileMenu.classList.add('active');
-                });
-                document.body.style.overflow = 'hidden';
-            }
-
-            function closeMenu() {
-                mobileMenu.classList.remove('active');
-                // Close all submenus
-                document.querySelectorAll('.submenu').forEach(submenu => {
-                    submenu.classList.remove('active');
-                });
-                document.querySelectorAll('.nav-item > a svg').forEach(arrow => {
-                    arrow.classList.remove('rotate-180');
-                });
-                setTimeout(() => {
-                    mobileMenu.classList.add('hidden');
-                }, 500);
-                document.body.style.overflow = '';
-            }
-
-            menuButton.addEventListener('click', openMenu);
-            closeButton.addEventListener('click', closeMenu);
-        });
-
-        // Navbar hover functionality
-        document.addEventListener('DOMContentLoaded', function () {
-            const navbar = getElement('navbar');
-            const overlay = getElement('nav-overlay');
-            let timeoutId = null;
-
-            if (!navbar || !overlay) return;
-
-            function showOverlay() {
-                clearTimeout(timeoutId);
-                overlay.classList.add('active');
-            }
-
-            function hideOverlay() {
-                timeoutId = setTimeout(() => {
-                    overlay.classList.remove('active');
-                }, 100);
-            }
-
-            navbar.addEventListener('mouseenter', showOverlay);
-            navbar.addEventListener('mouseleave', hideOverlay);
-            overlay.addEventListener('mouseenter', () => {
-                clearTimeout(timeoutId);
-            });
-            overlay.addEventListener('mouseleave', hideOverlay);
-
-            // Click outside to close
-            document.addEventListener('click', (e) => {
-                if (!navbar.contains(e.target) && !overlay.contains(e.target)) {
-                    hideOverlay();
-                }
-            });
-        });
-
-        // Language Dropdown functionality
-        function setupLanguageDropdown(triggerId, menuId) {
-            const trigger = getElement(triggerId);
-            const menu = getElement(menuId);
-            
-            if (!trigger || !menu) return;
-
-            trigger.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const triggerHeight = trigger.offsetHeight;
-                menu.style.bottom = `${triggerHeight}px`;
-                menu.classList.toggle('hidden');
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!menu.contains(e.target) && !trigger.contains(e.target)) {
-                    menu.classList.add('hidden');
-                }
-            });
-        }
-
-        // Initialize language dropdowns
-        document.addEventListener('DOMContentLoaded', function() {
-            setupLanguageDropdown('desktop-lang-trigger', 'desktop-lang-menu');
-            setupLanguageDropdown('mobile-lang-trigger', 'mobile-lang-menu');
-        });
-    </script>
-  
-</body>
-
-</html>
+    <script src="src/coco.js"></script>
+ript>
